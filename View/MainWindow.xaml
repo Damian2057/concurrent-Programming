@@ -1,0 +1,28 @@
+﻿<Window
+    Height="404"
+    Title="MainWindow"
+    Width="718"
+    mc:Ignorable="d"
+    x:Class="Presentation.View.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid>
+        <Label
+            Content=" "
+            FontSize="100"
+            HorizontalAlignment="Center"
+            Margin="0,194,0,0"
+            VerticalAlignment="Top"
+            x:Name="SampleText" Width="678" />
+        <Button
+            Click="onClick"
+            Content="ok"
+            FontSize="20"
+            HorizontalAlignment="Left"
+            Margin="225,32,0,0"
+            VerticalAlignment="Top" Height="127" Width="238" />
+
+    </Grid>
+</Window>

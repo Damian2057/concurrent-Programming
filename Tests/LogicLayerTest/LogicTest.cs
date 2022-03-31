@@ -1,6 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LogicLayerTest
+namespace Tests.LogicTest
 {
     [TestClass]
     public class LogicTest
@@ -20,6 +20,7 @@ namespace LogicLayerTest
         [TestMethod]
         public void TestMethod3()
         {
+
         }
     }
 }

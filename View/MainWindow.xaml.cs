@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WpfApp1
+namespace Presentation.View
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -23,6 +23,12 @@ namespace WpfApp1
         public MainWindow()
         {
             InitializeComponent();
+            Title = ViewModel.ViewModelClass.getText();
+        }
+
+        private void onClick(object sender, RoutedEventArgs e)
+        {
+            SampleText.Content = ViewModel.ViewModelClass.getText();
         }
     }
 }

@@ -1,6 +1,6 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace DataTest
+namespace Tests.DataTest
 {
     [TestClass]
     public class DataTest
@@ -8,7 +8,7 @@ namespace DataTest
         [TestMethod]
         public void TestMethod1()
         {
-
+            Assert.AreEqual("Hello world", Data.Bullet.GetText());
         }
 
         [TestMethod]
@@ -22,6 +22,5 @@ namespace DataTest
         {
 
         }
-
     }
 }
