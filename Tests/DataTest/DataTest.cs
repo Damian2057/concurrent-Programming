@@ -20,7 +20,7 @@ namespace Tests.DataTest
         [TestMethod]
         public void ObjectStorageTest()
         {
-            ObjectStorage objectStorage = new ObjectStorage();
+            ObjectStorage<Ball> objectStorage = new();
 
             Ball ball = new Ball(1,0, 1, 2, 3);
             objectStorage.AddBall(ball);

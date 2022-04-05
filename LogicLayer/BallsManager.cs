@@ -10,7 +10,7 @@ namespace LogicLayer
         private readonly int _mapWidth;
         private readonly int _mapHeight;
 
-        private ObjectStorage _ObjectStorage = new();
+        private ObjectStorage<Ball> _ObjectStorage = new();
 
         public BallsManager(int mapWidth, int mapHeight)
         {
