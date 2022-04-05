@@ -18,14 +18,64 @@ namespace LogicLayer
             _mapWidth = mapWidth;
         }
 
-        public void CreateBall()
+        public int GetMapWidth()
         {
+            return _mapWidth;
+        }
 
+        public int GetMapHeight()
+        {
+            return _mapHeight;
+        }
+
+        public void CreateBall(int ID, int x, int y, int xspeed, int yspeed) 
+        {
+            if(IsBallWithID(ID) 
+               && (x < 0 || x > _mapWidth 
+                         || y < 0 || y > _mapHeight 
+                         || xspeed < -50 || xspeed > 50 
+                         || yspeed < -50 || yspeed > 50))
+            {
+                throw new InvalidDataException("The ball parameters entered are invalid");
+            }
+            else
+            {
+                Ball newBall = new Ball(ID, x, y, xspeed, yspeed);
+                _ObjectStorage.AddBall(newBall);
+            }
         }
 
         public void GenerateRandomBall()
         {
+            Random rand = new Random();
+            CreateBall(AutoID()
+                , rand.Next(0,_mapWidth),rand.Next(0,_mapHeight)
+                , rand.Next(-50,50), rand.Next(-50, 50));
+        }
 
+        public int AutoID()
+        {
+            List<Ball> sortedBalls = GetAllBalls().OrderBy(o => o.Getid()).ToList();
+            return sortedBalls.ElementAt(sortedBalls.Count-1).Getid()+1;
+        }
+
+        public void DoTick()
+        {
+            //TODO: Calls to this function will cause the balls to move (change their position),
+            //a condition to check if the ball has not reached the border (with some radius?)
+        }
+
+        public bool IsBallWithID(int ID)
+        {
+            foreach (Ball obj in _ObjectStorage.GetAllBalls())
+            {
+                if (ID == obj.Getid())
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public Ball GetBallByID(int ID)
@@ -64,6 +114,5 @@ namespace LogicLayer
         {
             _ObjectStorage.ClearStorage();
         }
-
     }
 }
