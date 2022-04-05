@@ -9,11 +9,12 @@ namespace Tests.DataTest
         [TestMethod]
         public void BallConstructorTest()
         {
-            Ball ball = new Ball(0, 1, 2, 3);
+            Ball ball = new Ball(0,0, 1, 2, 3);
             Assert.AreEqual(0, ball.XPos);
             Assert.AreEqual(1, ball.YPos);
             Assert.AreEqual(2, ball.XSpeed);
             Assert.AreEqual(3, ball.YSpeed);
+            Assert.AreEqual(0, ball.Getid());
         }
 
         [TestMethod]
@@ -21,11 +22,11 @@ namespace Tests.DataTest
         {
             ObjectStorage objectStorage = new ObjectStorage();
 
-            Ball ball = new Ball(0, 1, 2, 3);
+            Ball ball = new Ball(1,0, 1, 2, 3);
             objectStorage.AddBall(ball);
 
             Assert.AreEqual(objectStorage.GetAllBalls().Count, 1);
-            Ball ball2 = new Ball(0, 1, 2, 3);
+            Ball ball2 = new Ball(2,0, 1, 2, 3);
             objectStorage.AddBall(ball2);
 
             Assert.AreEqual(objectStorage.GetAllBalls().Count, 2);
