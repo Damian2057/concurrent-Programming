@@ -23,12 +23,11 @@ namespace Presentation.View
         public MainWindow()
         {
             InitializeComponent();
-            Title = ViewModel.ViewModelClass.getText();
         }
 
         private void onClick(object sender, RoutedEventArgs e)
         {
-            SampleText.Content = ViewModel.ViewModelClass.getText();
+            
         }
     }
 }
