@@ -55,8 +55,16 @@ namespace LogicLayer
 
         public int AutoID()
         {
-            List<Ball> sortedBalls = GetAllBalls().OrderBy(o => o.Getid()).ToList();
-            return sortedBalls.ElementAt(sortedBalls.Count-1).Getid()+1;
+            int max = 0;
+            foreach (Ball ball in GetAllBalls())
+            {
+                if (max < ball.Getid())
+                {
+                    max = ball.Getid();
+                }
+            }
+
+            return max + 1;
         }
 
         public void DoTick()
