@@ -10,14 +10,14 @@ namespace Data
 {
     public class ObjectStorage
     {
-        private ArrayList _balls = new ArrayList();
+        private List<Ball> _balls = new();
 
         public void AddBall(Ball obj)
         {
             _balls.Add(obj);
         }
 
-        public ArrayList GetAllBalls()
+        public List<Ball> GetAllBalls()
         {
             return _balls;
         }
