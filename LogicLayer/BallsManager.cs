@@ -55,7 +55,10 @@ namespace LogicLayer
 
         public void SummonBalls(int amount)
         {
-            //generate balls
+            for (int i = 0; i < amount; i++)
+            {
+                GenerateRandomBall();
+            }
         }
 
         public int AutoID()

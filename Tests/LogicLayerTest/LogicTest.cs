@@ -42,6 +42,13 @@ namespace Tests.LogicTest
             Assert.IsTrue(ballsManager.IsBallWithID(3));
             Assert.ThrowsException<InvalidDataException>(() => ballsManager.GetBallByID(4));
             Assert.ThrowsException<InvalidDataException>(() => ballsManager.RemoveBallByID(4));
+
+            ballsManager.ClearMap();
+            Assert.AreEqual(0, ballsManager.GetAllBalls().Count);
+            ballsManager.SummonBalls(5);
+            Assert.AreEqual(5, ballsManager.GetAllBalls().Count);
+            ballsManager.SummonBalls(3);
+            Assert.AreEqual(8, ballsManager.GetAllBalls().Count);
         }
 
         [TestMethod]
