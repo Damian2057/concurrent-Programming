@@ -28,19 +28,19 @@ namespace LogicLayer
             return _mapHeight;
         }
 
-        public void CreateBall(int ID, int x, int y, int xspeed, int yspeed) 
+        public void CreateBall(int ID, int x, int y, int xdirectory, int ydirectory) 
         {
             if(IsBallWithID(ID) 
                && (x < 0 || x > _mapWidth 
                          || y < 0 || y > _mapHeight 
-                         || xspeed < -50 || xspeed > 50 
-                         || yspeed < -50 || yspeed > 50))
+                         || xdirectory < -50 || xdirectory > 50 
+                         || ydirectory < -50 || ydirectory > 50))
             {
                 throw new InvalidDataException("The ball parameters entered are invalid");
             }
             else
             {
-                Ball newBall = new Ball(ID, x, y, xspeed, yspeed);
+                Ball newBall = new Ball(ID, x, y, xdirectory, ydirectory);
                 _ObjectStorage.AddBall(newBall);
             }
         }
@@ -51,6 +51,11 @@ namespace LogicLayer
             CreateBall(AutoID()
                 , rand.Next(0,_mapWidth),rand.Next(0,_mapHeight)
                 , rand.Next(-50,50), rand.Next(-50, 50));
+        }
+
+        public void SummonBalls(int amount)
+        {
+            //generate balls
         }
 
         public int AutoID()
@@ -69,8 +74,20 @@ namespace LogicLayer
 
         public void DoTick()
         {
-            //TODO: Calls to this function will cause the balls to move (change their position),
-            //a condition to check if the ball has not reached the border (with some radius?)
+            //TODO: add ball radius to condition
+            foreach (Ball ball in GetAllBalls())
+            {
+                if (ball.XPos + ball.XDirectory < 0 || ball.XPos + ball.XDirectory > _mapWidth)
+                {
+                    ball.XDirectory = ball.XDirectory * (-1);
+                }
+                if (ball.YPos + ball.YDirectory < 0 || ball.YPos + ball.YDirectory > _mapHeight)
+                {
+                    ball.YDirectory = ball.YDirectory * (-1);
+                }
+                ball.XPos += ball.XDirectory;
+                ball.YPos += ball.YDirectory;
+            }
         }
 
         public bool IsBallWithID(int ID)

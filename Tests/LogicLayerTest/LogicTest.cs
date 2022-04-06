@@ -47,7 +47,27 @@ namespace Tests.LogicTest
         [TestMethod]
         public void TickTest()
         {
-            //TICK TEST HERE
+            BallsManager ballsManager = new BallsManager(150, 100);
+            //X CORD
+            ballsManager.CreateBall(0, 130, 0, 10, 0);
+            ballsManager.DoTick();
+            Assert.AreEqual(140, ballsManager.GetBallByID(0).XPos);
+            ballsManager.DoTick();
+            Assert.AreEqual(150, ballsManager.GetBallByID(0).XPos);
+            ballsManager.DoTick();
+            Assert.AreEqual(140, ballsManager.GetBallByID(0).XPos);
+            ballsManager.DoTick();
+            Assert.AreEqual(130, ballsManager.GetBallByID(0).XPos);
+            //Y CORD
+            ballsManager.CreateBall(1, 0, 20, 0, -10);
+            ballsManager.DoTick();
+            Assert.AreEqual(10, ballsManager.GetBallByID(1).YPos);
+            ballsManager.DoTick();
+            Assert.AreEqual(0, ballsManager.GetBallByID(1).YPos);
+            ballsManager.DoTick();
+            Assert.AreEqual(10, ballsManager.GetBallByID(1).YPos);
+            ballsManager.DoTick();
+            Assert.AreEqual(20, ballsManager.GetBallByID(1).YPos);
         }
     }
 }
