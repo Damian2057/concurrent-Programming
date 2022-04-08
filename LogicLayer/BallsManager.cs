@@ -10,7 +10,7 @@ namespace LogicLayer
         private readonly int _mapWidth;
         private readonly int _mapHeight;
 
-        private ObjectStorage<Ball> _ObjectStorage = new();
+        private readonly ObjectStorage<Ball> _objectStorage = new();
 
         public BallsManager(int mapWidth, int mapHeight)
         {
@@ -28,20 +28,20 @@ namespace LogicLayer
             return _mapHeight;
         }
 
-        public void CreateBall(int ID, int x, int y, int xdirectory, int ydirectory) 
+        public void CreateBall(int ID, int x, int y, int xDirectory, int yDirectory) 
         {
             if(IsBallWithID(ID) 
                && (x < 0 || x > _mapWidth 
                          || y < 0 || y > _mapHeight 
-                         || xdirectory < -50 || xdirectory > 50 
-                         || ydirectory < -50 || ydirectory > 50))
+                         || xDirectory < -50 || xDirectory > 50 
+                         || yDirectory < -50 || yDirectory > 50))
             {
                 throw new InvalidDataException("The ball parameters entered are invalid");
             }
             else
             {
-                Ball newBall = new Ball(ID, x, y, xdirectory, ydirectory);
-                _ObjectStorage.AddBall(newBall);
+                Ball newBall = new Ball(ID, x, y, xDirectory, yDirectory);
+                _objectStorage.AddBall(newBall);
             }
         }
 
@@ -95,7 +95,7 @@ namespace LogicLayer
 
         public bool IsBallWithID(int ID)
         {
-            foreach (Ball obj in _ObjectStorage.GetAllBalls())
+            foreach (Ball obj in _objectStorage.GetAllBalls())
             {
                 if (ID == obj.Getid())
                 {
@@ -108,11 +108,11 @@ namespace LogicLayer
 
         public Ball GetBallByID(int ID)
         {
-            foreach (Ball obj in _ObjectStorage.GetAllBalls())
+            foreach (Ball obj in _objectStorage.GetAllBalls())
             {
                 if (ID == obj.Getid())
                 {
-                    return _ObjectStorage.GetAllBalls().ElementAt(ID);
+                    return _objectStorage.GetAllBalls().ElementAt(ID);
                 }
             }
 
@@ -121,11 +121,11 @@ namespace LogicLayer
 
         public void RemoveBallByID(int ID)
         {
-            foreach (Ball obj in _ObjectStorage.GetAllBalls())
+            foreach (Ball obj in _objectStorage.GetAllBalls())
             {
                 if (ID == obj.Getid())
                 { 
-                    _ObjectStorage.RemoveBall(obj);
+                    _objectStorage.RemoveBall(obj);
                     return;
                 }
             }
@@ -135,12 +135,12 @@ namespace LogicLayer
 
         public List<Ball> GetAllBalls()
         {
-            return _ObjectStorage.GetAllBalls();
+            return _objectStorage.GetAllBalls();
         }
 
         public void ClearMap()
         {
-            _ObjectStorage.ClearStorage();
+            _objectStorage.ClearStorage();
         }
     }
 }
