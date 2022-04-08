@@ -12,15 +12,15 @@ namespace Tests.DataTest
             Ball ball = new Ball(0,0, 1, 2, 3);
             Assert.AreEqual(0, ball.XPos);
             Assert.AreEqual(1, ball.YPos);
-            Assert.AreEqual(2, ball.XSpeed);
-            Assert.AreEqual(3, ball.YSpeed);
+            Assert.AreEqual(2, ball.XDirectory);
+            Assert.AreEqual(3, ball.YDirectory);
             Assert.AreEqual(0, ball.Getid());
         }
 
         [TestMethod]
         public void ObjectStorageTest()
         {
-            ObjectStorage objectStorage = new ObjectStorage();
+            ObjectStorage<Ball> objectStorage = new();
 
             Ball ball = new Ball(1,0, 1, 2, 3);
             objectStorage.AddBall(ball);

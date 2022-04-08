@@ -8,21 +8,21 @@ using System.Threading.Tasks;
 
 namespace Data
 {
-    public class ObjectStorage
+    public class ObjectStorage<T>
     {
-        private ArrayList _balls = new ArrayList();
+        private List<T> _balls = new();
 
-        public void AddBall(Ball obj)
+        public void AddBall(T obj)
         {
             _balls.Add(obj);
         }
 
-        public ArrayList GetAllBalls()
+        public List<T> GetAllBalls()
         {
             return _balls;
         }
 
-        public void RemoveBall(Ball obj)
+        public void RemoveBall(T obj)
         {
             _balls.Remove(obj);
         }
