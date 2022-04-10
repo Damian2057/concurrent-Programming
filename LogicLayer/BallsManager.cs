@@ -9,13 +9,14 @@ namespace LogicLayer
     {
         private readonly int _mapWidth;
         private readonly int _mapHeight;
-
         private readonly ObjectStorage<Ball> _objectStorage = new();
+        private readonly int _ballRadius;
 
         public BallsManager(int mapWidth, int mapHeight)
         {
             _mapHeight = mapHeight;
             _mapWidth = mapWidth;
+            _ballRadius = Math.Min(mapHeight, mapWidth) / 60;
         }
 
         public int GetMapWidth()
@@ -28,19 +29,24 @@ namespace LogicLayer
             return _mapHeight;
         }
 
+        public int GetBallsRadius()
+        {
+            return _ballRadius;
+        }
+
         public void CreateBall(int ID, int x, int y, int xDirectory, int yDirectory) 
         {
             if(IsBallWithID(ID) 
-               && (x < 0 || x > _mapWidth 
-                         || y < 0 || y > _mapHeight 
-                         || xDirectory < -50 || xDirectory > 50 
-                         || yDirectory < -50 || yDirectory > 50))
+               || (x < _ballRadius || x > _mapWidth - _ballRadius 
+                         || y < _ballRadius || y > _mapHeight - _ballRadius 
+                         || yDirectory > _mapHeight - _ballRadius || yDirectory < ((-1) * _mapHeight + _ballRadius) 
+                         || xDirectory > _mapWidth - _ballRadius || xDirectory < ((-1) * _mapWidth + _ballRadius)))
             {
                 throw new InvalidDataException("The ball parameters entered are invalid");
             }
             else
             {
-                Ball newBall = new Ball(ID, x, y, xDirectory, yDirectory);
+                Ball newBall = new Ball(ID, x, y, _ballRadius, xDirectory, yDirectory);
                 _objectStorage.AddBall(newBall);
             }
         }
@@ -49,8 +55,10 @@ namespace LogicLayer
         {
             Random rand = new Random();
             CreateBall(AutoID()
-                , rand.Next(0,_mapWidth),rand.Next(0,_mapHeight)
-                , rand.Next(-50,50), rand.Next(-50, 50));
+                , rand.Next(_ballRadius, _mapWidth - _ballRadius)
+                ,rand.Next(_ballRadius, _mapHeight - _ballRadius)
+                , rand.Next((-1) * _mapWidth + _ballRadius, _mapWidth - _ballRadius)
+                , rand.Next((-1) * _mapHeight + _ballRadius, _mapHeight - _ballRadius));
         }
 
         public void SummonBalls(int amount)
@@ -80,11 +88,11 @@ namespace LogicLayer
             //TODO: add ball radius to condition
             foreach (Ball ball in GetAllBalls())
             {
-                if (ball.XPos + ball.XDirectory < 0 || ball.XPos + ball.XDirectory > _mapWidth)
+                if (ball.XPos + ball.XDirectory + ball.Radius < 0 || ball.XPos + ball.XDirectory + ball.Radius > _mapWidth)
                 {
                     ball.XDirectory = ball.XDirectory * (-1);
                 }
-                if (ball.YPos + ball.YDirectory < 0 || ball.YPos + ball.YDirectory > _mapHeight)
+                if (ball.YPos + ball.YDirectory + ball.Radius < 0 || ball.YPos + ball.YDirectory + ball.Radius > _mapHeight)
                 {
                     ball.YDirectory = ball.YDirectory * (-1);
                 }

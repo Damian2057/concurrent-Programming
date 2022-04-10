@@ -51,30 +51,75 @@ namespace Tests.LogicTest
             Assert.AreEqual(8, ballsManager.GetAllBalls().Count);
         }
 
+        [DataTestMethod]
+        [DataRow(1,51,1,1,1)]
+        [DataRow(1, 1, 51, 1, 1)]
+        [DataRow(1, 51, 51, 1, 1)]
+        [DataRow(1, -5, 5, 1, 1)]
+        [DataRow(1, 5, -5, 1, 1)]
+        [DataRow(1, -5, -5, 1, 1)]
+        [DataRow(1, 5, 5, -51, 1)]
+        [DataRow(1, 5, 5, 1, -51)]
+        [DataRow(1, 5, 5, -51, -51)]
+        public void BallManagerExceptionTest(int ID,int xPos, int yPos, int xD, int yD)
+        {
+            BallsManager ballsManager = new BallsManager(50, 50);
+            Assert.ThrowsException<InvalidDataException>(() => ballsManager.CreateBall(ID,xPos, yPos,xD,yD));
+            Assert.AreEqual(0,ballsManager.GetAllBalls().Count);
+        }
+
         [TestMethod]
         public void TickTest()
         {
             BallsManager ballsManager = new BallsManager(150, 100);
-            //X CORD
-            ballsManager.CreateBall(0, 130, 0, 10, 0);
+            //XY CORDS
+            ballsManager.SummonBalls(2);
+            int x = ballsManager.GetBallByID(1).XPos;
+            int xD = ballsManager.GetBallByID(1).XDirectory;
+
+            int newX = 0;
+            int newxD = 0;
+
+            if (ballsManager.GetBallByID(1).XPos
+                + ballsManager.GetBallByID(1).XDirectory
+                + ballsManager.GetBallsRadius() > ballsManager.GetMapWidth() || ballsManager.GetBallByID(1).XPos
+                + ballsManager.GetBallByID(1).XDirectory
+                + ballsManager.GetBallsRadius() < 0)
+            {
+                newxD = xD * (-1);
+            }
+            else
+            {
+                newxD = xD;
+            }
+            newX = x + newxD;
             ballsManager.DoTick();
-            Assert.AreEqual(140, ballsManager.GetBallByID(0).XPos);
+            Assert.AreEqual(ballsManager.GetBallByID(1).XPos, newX);
+
+            int y = ballsManager.GetBallByID(1).YPos;
+            int yD = ballsManager.GetBallByID(1).YDirectory;
+
+            int newy = 0;
+            int newyD = 0;
+
+
+            if (ballsManager.GetBallByID(1).YPos
+                + ballsManager.GetBallByID(1).YDirectory
+                + ballsManager.GetBallsRadius() > ballsManager.GetMapHeight() || ballsManager.GetBallByID(1).YPos
+                + ballsManager.GetBallByID(1).YDirectory
+                + ballsManager.GetBallsRadius() < 0)
+            {
+                newyD = yD * (-1);
+            }
+            else
+            {
+                newyD = yD;
+            }
+            newy = y + newyD;
             ballsManager.DoTick();
-            Assert.AreEqual(150, ballsManager.GetBallByID(0).XPos);
-            ballsManager.DoTick();
-            Assert.AreEqual(140, ballsManager.GetBallByID(0).XPos);
-            ballsManager.DoTick();
-            Assert.AreEqual(130, ballsManager.GetBallByID(0).XPos);
-            //Y CORD
-            ballsManager.CreateBall(1, 0, 20, 0, -10);
-            ballsManager.DoTick();
-            Assert.AreEqual(10, ballsManager.GetBallByID(1).YPos);
-            ballsManager.DoTick();
-            Assert.AreEqual(0, ballsManager.GetBallByID(1).YPos);
-            ballsManager.DoTick();
-            Assert.AreEqual(10, ballsManager.GetBallByID(1).YPos);
-            ballsManager.DoTick();
-            Assert.AreEqual(20, ballsManager.GetBallByID(1).YPos);
+            Assert.AreEqual(ballsManager.GetBallByID(1).YPos, newy);
+
+
         }
     }
 }

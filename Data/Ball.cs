@@ -8,14 +8,16 @@
         public int YPos { get; set; }
         public int XDirectory { get; set; }
         public int YDirectory { get; set; }
+        public int Radius { get; set; }
 
-        public Ball(int ID, int xPos, int yPos, int xDirectory, int yDirectory)
+        public Ball(int ID, int xPos, int yPos,int radius, int xDirectory, int yDirectory)
         {
             _ballID = ID;
             XPos = xPos;
             YPos = yPos;
             XDirectory = xDirectory;
             YDirectory = yDirectory;
+            Radius = radius;
         }
 
         public int Getid()
