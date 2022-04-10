@@ -1,6 +1,8 @@
-﻿namespace Presentation.ViewModel
+﻿using Presentation.ViewModel.MVVMcore;
+
+namespace Presentation.ViewModel
 {
-    public class ViewModelClass
+    public class ViewModelClass : BaseViewModel
     {
        
     }
