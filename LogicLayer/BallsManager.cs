@@ -36,7 +36,7 @@ namespace LogicLayer
 
         public void CreateBall(int ID, int x, int y, int xDirectory, int yDirectory) 
         {
-            if(IsBallWithID(ID) 
+            if(CheckForDuplicateID(ID) 
                || (x < _ballRadius || x > _mapWidth - _ballRadius 
                          || y < _ballRadius || y > _mapHeight - _ballRadius 
                          || yDirectory > _mapHeight - _ballRadius || yDirectory < ((-1) * _mapHeight + _ballRadius) 
@@ -74,9 +74,9 @@ namespace LogicLayer
             int max = 0;
             foreach (Ball ball in GetAllBalls())
             {
-                if (max < ball.Getid())
+                if (max < ball.GetID())
                 {
-                    max = ball.Getid();
+                    max = ball.GetID();
                 }
             }
 
@@ -88,24 +88,24 @@ namespace LogicLayer
             //TODO: add ball radius to condition
             foreach (Ball ball in GetAllBalls())
             {
-                if (ball.XPos + ball.XDirectory + ball.Radius < 0 || ball.XPos + ball.XDirectory + ball.Radius > _mapWidth)
+                if (ball.XPos + ball.XDirection + ball.Radius < 0 || ball.XPos + ball.XDirection + ball.Radius > _mapWidth)
                 {
-                    ball.XDirectory = ball.XDirectory * (-1);
+                    ball.XDirection = ball.XDirection * (-1);
                 }
-                if (ball.YPos + ball.YDirectory + ball.Radius < 0 || ball.YPos + ball.YDirectory + ball.Radius > _mapHeight)
+                if (ball.YPos + ball.YDirection + ball.Radius < 0 || ball.YPos + ball.YDirection + ball.Radius > _mapHeight)
                 {
-                    ball.YDirectory = ball.YDirectory * (-1);
+                    ball.YDirection = ball.YDirection * (-1);
                 }
-                ball.XPos += ball.XDirectory;
-                ball.YPos += ball.YDirectory;
+                ball.XPos += ball.XDirection;
+                ball.YPos += ball.YDirection;
             }
         }
 
-        public bool IsBallWithID(int ID)
+        public bool CheckForDuplicateID(int ID)
         {
             foreach (Ball obj in _objectStorage.GetAllBalls())
             {
-                if (ID == obj.Getid())
+                if (ID == obj.GetID())
                 {
                     return true;
                 }
@@ -118,7 +118,7 @@ namespace LogicLayer
         {
             foreach (Ball obj in _objectStorage.GetAllBalls())
             {
-                if (ID == obj.Getid())
+                if (ID == obj.GetID())
                 {
                     return _objectStorage.GetAllBalls().ElementAt(ID);
                 }
@@ -131,7 +131,7 @@ namespace LogicLayer
         {
             foreach (Ball obj in _objectStorage.GetAllBalls())
             {
-                if (ID == obj.Getid())
+                if (ID == obj.GetID())
                 { 
                     _objectStorage.RemoveBall(obj);
                     return;

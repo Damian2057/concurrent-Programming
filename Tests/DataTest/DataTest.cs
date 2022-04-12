@@ -12,9 +12,9 @@ namespace Tests.DataTest
             Ball ball = new Ball(0,0, 1,0, 2, 3);
             Assert.AreEqual(0, ball.XPos);
             Assert.AreEqual(1, ball.YPos);
-            Assert.AreEqual(2, ball.XDirectory);
-            Assert.AreEqual(3, ball.YDirectory);
-            Assert.AreEqual(0, ball.Getid());
+            Assert.AreEqual(2, ball.XDirection);
+            Assert.AreEqual(3, ball.YDirection);
+            Assert.AreEqual(0, ball.GetID());
             Assert.AreEqual(0, ball.Radius);
         }
 

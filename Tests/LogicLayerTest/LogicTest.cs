@@ -22,8 +22,8 @@ namespace Tests.LogicTest
             Assert.AreEqual(0, ballsManager.GetAllBalls().Count);
             ballsManager.CreateBall(0,5,5,10,10);
             Assert.AreEqual(1, ballsManager.GetAllBalls().Count);
-            Assert.IsTrue(ballsManager.IsBallWithID(0));
-            Assert.IsFalse(ballsManager.IsBallWithID(1));
+            Assert.IsTrue(ballsManager.CheckForDuplicateID(0));
+            Assert.IsFalse(ballsManager.CheckForDuplicateID(1));
             Assert.AreEqual(1,ballsManager.AutoID());
             ballsManager.ClearMap();
             Assert.AreEqual(0, ballsManager.GetAllBalls().Count);
@@ -37,9 +37,9 @@ namespace Tests.LogicTest
             ballsManager.GenerateRandomBall();
             ballsManager.GenerateRandomBall();
             Assert.AreEqual(3, ballsManager.GetAllBalls().Count);
-            Assert.IsTrue(ballsManager.IsBallWithID(1));
-            Assert.IsTrue(ballsManager.IsBallWithID(2));
-            Assert.IsTrue(ballsManager.IsBallWithID(3));
+            Assert.IsTrue(ballsManager.CheckForDuplicateID(1));
+            Assert.IsTrue(ballsManager.CheckForDuplicateID(2));
+            Assert.IsTrue(ballsManager.CheckForDuplicateID(3));
             Assert.ThrowsException<InvalidDataException>(() => ballsManager.GetBallByID(4));
             Assert.ThrowsException<InvalidDataException>(() => ballsManager.RemoveBallByID(4));
 
@@ -74,50 +74,50 @@ namespace Tests.LogicTest
             BallsManager ballsManager = new BallsManager(150, 100);
             //XY CORDS
             ballsManager.SummonBalls(2);
-            int x = ballsManager.GetBallByID(1).XPos;
-            int xD = ballsManager.GetBallByID(1).XDirectory;
+            int xCurrentPos = ballsManager.GetBallByID(1).XPos;
+            int xHeading = ballsManager.GetBallByID(1).XDirection;
 
-            int newX = 0;
-            int newxD = 0;
+            int xPredictedPos = 0;
+            int xPredictedHeading = 0;
 
             if (ballsManager.GetBallByID(1).XPos
-                + ballsManager.GetBallByID(1).XDirectory
+                + ballsManager.GetBallByID(1).XDirection
                 + ballsManager.GetBallsRadius() > ballsManager.GetMapWidth() || ballsManager.GetBallByID(1).XPos
-                + ballsManager.GetBallByID(1).XDirectory
+                + ballsManager.GetBallByID(1).XDirection
                 + ballsManager.GetBallsRadius() < 0)
             {
-                newxD = xD * (-1);
+                xPredictedHeading = xHeading * (-1);
             }
             else
             {
-                newxD = xD;
+                xPredictedHeading = xHeading;
             }
-            newX = x + newxD;
+            xPredictedPos = xCurrentPos + xPredictedHeading;
             ballsManager.DoTick();
-            Assert.AreEqual(ballsManager.GetBallByID(1).XPos, newX);
+            Assert.AreEqual(ballsManager.GetBallByID(1).XPos, xPredictedPos);
 
-            int y = ballsManager.GetBallByID(1).YPos;
-            int yD = ballsManager.GetBallByID(1).YDirectory;
+            int yCurrentPos = ballsManager.GetBallByID(1).YPos;
+            int yHeading = ballsManager.GetBallByID(1).YDirection;
 
-            int newy = 0;
-            int newyD = 0;
+            int yPredictedPos = 0;
+            int yPredictedHeading = 0;
 
 
             if (ballsManager.GetBallByID(1).YPos
-                + ballsManager.GetBallByID(1).YDirectory
+                + ballsManager.GetBallByID(1).YDirection
                 + ballsManager.GetBallsRadius() > ballsManager.GetMapHeight() || ballsManager.GetBallByID(1).YPos
-                + ballsManager.GetBallByID(1).YDirectory
+                + ballsManager.GetBallByID(1).YDirection
                 + ballsManager.GetBallsRadius() < 0)
             {
-                newyD = yD * (-1);
+                yPredictedHeading = yHeading * (-1);
             }
             else
             {
-                newyD = yD;
+                yPredictedHeading = yHeading;
             }
-            newy = y + newyD;
+            yPredictedPos = yCurrentPos + yPredictedHeading;
             ballsManager.DoTick();
-            Assert.AreEqual(ballsManager.GetBallByID(1).YPos, newy);
+            Assert.AreEqual(ballsManager.GetBallByID(1).YPos, yPredictedPos);
 
 
         }

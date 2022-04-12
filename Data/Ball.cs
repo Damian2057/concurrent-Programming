@@ -6,21 +6,21 @@
         private readonly int _ballID;
         public int XPos { get; set; }
         public int YPos { get; set; }
-        public int XDirectory { get; set; }
-        public int YDirectory { get; set; }
+        public int XDirection { get; set; }
+        public int YDirection { get; set; }
         public int Radius { get; set; }
 
-        public Ball(int ID, int xPos, int yPos,int radius, int xDirectory, int yDirectory)
+        public Ball(int ID, int xPos, int yPos,int radius, int xDir, int yDir)
         {
             _ballID = ID;
             XPos = xPos;
             YPos = yPos;
-            XDirectory = xDirectory;
-            YDirectory = yDirectory;
+            XDirection = xDir;
+            YDirection = yDir;
             Radius = radius;
         }
 
-        public int Getid()
+        public int GetID()
         {
             return _ballID;
         }
