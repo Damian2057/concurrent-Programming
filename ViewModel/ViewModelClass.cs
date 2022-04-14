@@ -43,7 +43,7 @@ namespace Presentation.ViewModel
             }
         }
 
-        public List<Ball> GetBalls { get => _mainMap.GetBalls(); }
+        public Ball[]? GetBalls { get => _mainMap.GetBalls().ToArray(); }
 
         public void Start()
         {
@@ -53,11 +53,11 @@ namespace Presentation.ViewModel
 
                 if(numberOfBalls < 0)
                 {
-                    throw new ArgumentException("to do error");
+                    throw new ArgumentException("Number of balls is less than 0");
                 }
 
                 _mainMap.CreateBalls(numberOfBalls);
-                OnPropertyChanged("Balls");
+                OnPropertyChanged("GetBalls");
                 CheckButton();
             }
             catch(Exception)
@@ -70,7 +70,7 @@ namespace Presentation.ViewModel
         public void Stop()
         {
             _mainMap.ClearMap();
-            OnPropertyChanged("Balls");
+            OnPropertyChanged("GetBalls");
             CheckButton();
         }
 
