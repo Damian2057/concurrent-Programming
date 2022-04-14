@@ -13,11 +13,50 @@
         <v:ViewModelClass/>
     </Window.DataContext>
     <Grid>
-        <Rectangle HorizontalAlignment="Left" Height="388" Margin="582,0,0,0" Stroke="Black" Fill="Pink" VerticalAlignment="Center" Width="136"/>
-        <TextBox HorizontalAlignment="Left" Margin="588,50,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <ItemsControl
+            ItemsSource="{Binding GetBalls}"
+            Margin="0,0,136,0">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas>
+                        <Canvas.Background>
+                            <RadialGradientBrush>
+                                <GradientStop Color="#E6A4B4" Offset="1"/>
+                                <GradientStop Color="#F5EEE6" Offset="0.007"/>
+                            </RadialGradientBrush>
+                        </Canvas.Background>
+                    </Canvas>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemContainerStyle>
+                <Style TargetType="ContentPresenter">
+                    <Setter Property="Canvas.Left" Value="{Binding XPos}" />
+                    <Setter Property="Canvas.Top" Value="{Binding YPos}" />
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Path Fill="Green">
+                        <Path.Data>
+                            <EllipseGeometry RadiusX="{Binding Radius}" RadiusY="{Binding Radius}" />
+                        </Path.Data>
+                    </Path>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        
+        <Rectangle HorizontalAlignment="Left" Height="388" Margin="582,0,0,0" Stroke="Black" VerticalAlignment="Center" Width="136">
+            <Rectangle.Fill>
+                <LinearGradientBrush StartPoint="0,1" EndPoint="1,1">
+                    <GradientStop Color="#F3D7CA" Offset="0.0" />
+                    <GradientStop Color="#F3D7CA" Offset="1.0" />
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <TextBox IsEnabled="{Binding Button}" Text="{Binding NumberOfBalls}" HorizontalAlignment="Left" Margin="588,50,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <Label Content="Enter number of balls:" HorizontalAlignment="Center" Height="23" Margin="588,22,0,0" VerticalAlignment="Top" Width="120" FontSize="10" FontFamily="Bahnschrift SemiBold"/>
-        <Button Content="Start" HorizontalAlignment="Left" Height="28" Margin="588,73,0,0" VerticalAlignment="Top" Width="120" Click="Button_Click"/>
-        <Button Content="Stop" HorizontalAlignment="Left" Height="29" Margin="588,111,0,0" VerticalAlignment="Top" Width="120"/>
+        <Button Content="Start" Command="{Binding _start}" HorizontalAlignment="Left" Background="White"  Height="29" Margin="588,73,0,0" VerticalAlignment="Top" Width="120" FontFamily="Bahnschrift SemiBold"/>
+        <Button Content="Stop" Command="{Binding _stop}" HorizontalAlignment="Left" Height="29" Background="#C86B85" Margin="588,111,0,0" VerticalAlignment="Top" Width="120" FontFamily="Bahnschrift SemiBold"/>
 
     </Grid>
 </Window>
