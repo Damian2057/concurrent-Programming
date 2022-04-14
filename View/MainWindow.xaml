@@ -36,7 +36,7 @@
             </ItemsControl.ItemContainerStyle>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Path Fill="Green">
+                    <Path Fill="#F6F7D7">
                         <Path.Data>
                             <EllipseGeometry RadiusX="{Binding Radius}" RadiusY="{Binding Radius}" />
                         </Path.Data>
