@@ -1,5 +1,6 @@
 ﻿using Presentation.ViewModel.MVVMcore;
 using Presentation.Model;
+using Data;
 
 namespace Presentation.ViewModel
 {
@@ -42,6 +43,42 @@ namespace Presentation.ViewModel
             }
         }
 
+        public List<Ball> GetBalls { get => _mainMap.GetBalls(); }
 
+        public void Start()
+        {
+            try
+            {
+                int numberOfBalls = int.Parse(_numberOfBalls);
+
+                if(numberOfBalls < 0)
+                {
+                    throw new ArgumentException("to do error");
+                }
+
+                _mainMap.CreateBalls(numberOfBalls);
+                OnPropertyChanged("Balls");
+                CheckButton();
+            }
+            catch(Exception)
+            {
+                _numberOfBalls = "";
+                OnPropertyChanged();
+            }
+        }
+
+        public void Stop()
+        {
+            _mainMap.ClearMap();
+            OnPropertyChanged("Balls");
+            CheckButton();
+        }
+
+        private void CheckButton()
+        {
+            Button = !Button;
+            //_start
+            //_stop
+        }
     }
 }
