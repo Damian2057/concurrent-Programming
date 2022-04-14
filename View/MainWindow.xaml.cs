@@ -24,10 +24,5 @@ namespace Presentation.View
         {
             InitializeComponent();
         }
-
-        private void onClick(object sender, RoutedEventArgs e)
-        {
-            
-        }
     }
 }
