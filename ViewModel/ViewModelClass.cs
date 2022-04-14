@@ -16,8 +16,8 @@ namespace Presentation.ViewModel
 
         public ViewModelClass()
         {
-            _start = new RelayCommand(); //to do
-            _stop = new RelayCommand(); //to do
+            _start = new RelayCommand(Start, CanButtonBeDisabled);
+            _stop = new RelayCommand(Stop, CanButtonBeEnabled);
             _numberOfBalls = "";
             _mainMap = new MainMap();
         }
@@ -77,8 +77,18 @@ namespace Presentation.ViewModel
         private void CheckButton()
         {
             Button = !Button;
-            //_start
-            //_stop
+            _start.OnCanExecuteChanged();
+            _stop.OnCanExecuteChanged();
+        }
+
+        private bool CanButtonBeEnabled()
+        {
+            return !Button;
+        }
+
+        private bool CanButtonBeDisabled()
+        {
+            return Button;
         }
     }
 }
