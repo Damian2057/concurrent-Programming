@@ -63,12 +63,20 @@ namespace LogicLayer
 
         public void GenerateRandomBall()
         {
-            Random rand = new Random();
+            Random rnd = new Random();
+            int xrand = 0, yrand = 0; 
+            while(xrand == 0 && yrand == 0)
+            {
+                xrand = rnd.Next(-5, 5);
+                yrand = rnd.Next(-5, 5);
+            }
+            
+
             CreateBall(AutoID()
-                , rand.Next(_ballMaxRadius, _mapWidth - _ballMaxRadius)
-                ,rand.Next(_ballMaxRadius, _mapHeight - _ballMaxRadius)
-                , (rand.Next((-1) * _mapWidth + _ballMaxRadius, _mapWidth - _ballMaxRadius)/500)
-                , (rand.Next((-1) * _mapHeight + _ballMaxRadius, _mapHeight - _ballMaxRadius)/500));
+                , rnd.Next(_ballMaxRadius, _mapWidth - _ballMaxRadius)
+                ,rnd.Next(_ballMaxRadius, _mapHeight - _ballMaxRadius)
+                , xrand
+                , yrand);
         }
 
         public void SummonBalls(int amount)

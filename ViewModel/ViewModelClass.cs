@@ -132,14 +132,23 @@ namespace Presentation.ViewModel
             _pause.OnCanExecuteChanged();
         }
 
+        public async void Tick()
+        {
+            while (_pauseFlag)
+            {
+                await Task.Delay(10);
+                _mainMap.Tick();
+                OnPropertyChanged("GetBalls");
+            }
+        }
+
         public void Resume()
         {
-            _mainMap.Tick();
-            OnPropertyChanged("GetBalls");
             _pauseFlag = true;
             _resumeFlag = false;
             _resume.OnCanExecuteChanged();
             _pause.OnCanExecuteChanged();
+            Tick();
         }
 
         public void Pause()
