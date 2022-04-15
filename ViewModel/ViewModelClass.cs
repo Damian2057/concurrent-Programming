@@ -134,16 +134,18 @@ namespace Presentation.ViewModel
 
         public void Resume()
         {
-            _pauseFlag = !_pauseFlag;
-            _resumeFlag = !_resumeFlag;
+            _mainMap.Tick();
+            OnPropertyChanged("GetBalls");
+            _pauseFlag = true;
+            _resumeFlag = false;
             _resume.OnCanExecuteChanged();
             _pause.OnCanExecuteChanged();
         }
 
         public void Pause()
         {
-            _resumeFlag = !_resumeFlag;
-            _pauseFlag = !_pauseFlag;
+            _resumeFlag = true;
+            _pauseFlag = false;
             _pause.OnCanExecuteChanged();
             _resume.OnCanExecuteChanged();
         }

@@ -9,6 +9,11 @@ namespace Presentation.Model
         private int _width;
         private int _height;
 
+        public void Tick()
+        {
+           _ballsManager.DoTick();
+        }
+
         public MainMap(int w, int h)
         {
             _width = w;

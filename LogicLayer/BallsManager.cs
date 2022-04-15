@@ -67,8 +67,8 @@ namespace LogicLayer
             CreateBall(AutoID()
                 , rand.Next(_ballMaxRadius, _mapWidth - _ballMaxRadius)
                 ,rand.Next(_ballMaxRadius, _mapHeight - _ballMaxRadius)
-                , rand.Next((-1) * _mapWidth + _ballMaxRadius, _mapWidth - _ballMaxRadius)
-                , rand.Next((-1) * _mapHeight + _ballMaxRadius, _mapHeight - _ballMaxRadius));
+                , (rand.Next((-1) * _mapWidth + _ballMaxRadius, _mapWidth - _ballMaxRadius)/500)
+                , (rand.Next((-1) * _mapHeight + _ballMaxRadius, _mapHeight - _ballMaxRadius)/500));
         }
 
         public void SummonBalls(int amount)
