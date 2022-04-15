@@ -5,8 +5,16 @@ namespace Presentation.Model
 {
     public class MainMap
     {
-        private readonly BallsManager _ballsManager = new BallsManager(600, 600);
+        private readonly BallsManager _ballsManager;
+        private int _width;
+        private int _height;
 
+        public MainMap(int w, int h)
+        {
+            _width = w;
+            _height = h;
+            _ballsManager = new BallsManager(_width, _height);
+        }
 
         public List<Ball> GetBalls()
         {

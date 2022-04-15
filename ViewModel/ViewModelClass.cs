@@ -14,12 +14,17 @@ namespace Presentation.ViewModel
 
         public MainMap _mainMap{ get; }
 
+        private int _width { get; }
+        private int _height { get; }
+
         public ViewModelClass()
         {
+            _width = 1000;
+            _height = 700;
             _start = new RelayCommand(Start, CanButtonBeDisabled);
             _stop = new RelayCommand(Stop, CanButtonBeEnabled);
             _numberOfBalls = "";
-            _mainMap = new MainMap();
+            _mainMap = new MainMap(_width, _height);
         }
 
         public string NumberOfBalls
