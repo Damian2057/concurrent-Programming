@@ -11,7 +11,6 @@ namespace LogicLayer
         private readonly int _mapHeight;
         private readonly ObjectStorage<Ball> _objectStorage = new();
         private readonly int _ballRadius;
-        private readonly string[] _color = new string[10];
 
         public BallsManager(int mapWidth, int mapHeight)
         {
@@ -35,41 +34,6 @@ namespace LogicLayer
             return _ballRadius;
         }
 
-        //kolory dla kulek (10)
-        //jasnoczerwony - #FF165D
-        //pomaranczowy - #FF9A00
-        //kremowy - #F6F7D7
-        //blekitny - #3EC1D3
-        //szaro-granatowy - #2D4059
-        //bladoczerwony - #EA5455
-        //cieplopomaranczowy - #F07B3F
-        //bladozolty - #FFD460
-        //bladofioletowy - #8675A9
-        //turkusowy - #00B8A9
-
-        public void FillColors()
-        {
-            _color[0] = "#FF165D";
-            _color[1] = "#FF9A00";
-            _color[2] = "#F6F7D7";
-            _color[3] = "#3EC1D3";
-            _color[4] = "#2D4059";
-            _color[5] = "#EA5455";
-            _color[6] = "#F07B3F";
-            _color[7] = "#FFD460";
-            _color[8] = "#8675A9";
-            _color[9] = "#00B8A9";
-        }
-
-        public string PickColor(int index)
-        {
-            if (index > 9)
-            {
-                Random rnd = new Random();
-                return _color[rnd.Next(10)];
-            }
-            return _color[index];
-        }
 
         public void CreateBall(int ID, int x, int y, int xDirectory, int yDirectory) 
         {

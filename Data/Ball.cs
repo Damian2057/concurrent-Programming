@@ -10,6 +10,9 @@
         public int YDirection { get; set; }
         public int Radius { get; set; }
 
+        private readonly string _color;
+
+        
         public Ball(int ID, int xPos, int yPos,int radius, int xDir, int yDir)
         {
             _ballID = ID;
@@ -18,7 +21,14 @@
             XDirection = xDir;
             YDirection = yDir;
             Radius = radius;
+            _color = Color.PickColor();
         }
+
+        public string GetColor()
+        {
+            return _color;
+        }
+
 
         public int GetID()
         {
