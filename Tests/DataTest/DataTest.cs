@@ -40,5 +40,13 @@ namespace Tests.DataTest
 
             Assert.AreEqual(objectStorage.GetAllBalls().Count, 0);
         }
+
+        [TestMethod]
+        public void ColorTest()
+        {
+            Ball ball = new Ball(1, 0, 1, 0, 2, 3);
+            Assert.IsTrue(ball.color != "");
+            Assert.IsTrue(ball.color is not null);
+        }
     }
 }
