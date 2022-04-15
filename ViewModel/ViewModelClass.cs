@@ -9,8 +9,12 @@ namespace Presentation.ViewModel
         private string _numberOfBalls;
         public RelayCommand _start { get; }
         public RelayCommand _stop { get; }
+        public RelayCommand _pause { get; }
+        public RelayCommand _resume { get; }
 
-        public bool _flag = true;
+        public bool _summonClearFlag = true;
+        public bool _resumeFlag = false;
+        public bool _pauseFlag = false;
 
         public MainMap _mainMap{ get; }
 
@@ -21,8 +25,10 @@ namespace Presentation.ViewModel
         {
             _width = 1000;
             _height = 706;
-            _start = new RelayCommand(Start, CanButtonBeDisabled);
-            _stop = new RelayCommand(Stop, CanButtonBeEnabled);
+            _start = new RelayCommand(Start, CanSummonClearBeDisabled);
+            _stop = new RelayCommand(Stop, CanSummonClearBeEnabled);
+            _resume = new RelayCommand(Resume, CanResumeBeDisabled);
+            _pause = new RelayCommand(Pause, CanPauseBeDisabled);
             _numberOfBalls = "";
             _mainMap = new MainMap(_width, _height);
         }
@@ -37,13 +43,35 @@ namespace Presentation.ViewModel
             }
         }
 
-        public bool Button
+        public bool SummonClearFlag
         {
-            get => _flag;
+            get => _summonClearFlag;
 
             set
             {
-                _flag = value;
+                _summonClearFlag = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool ResumeFlag
+        {
+            get => _resumeFlag;
+
+            set
+            {
+                _resumeFlag = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool PauseFlag
+        {
+            get => _pauseFlag;
+
+            set
+            {
+                _pauseFlag = value;
                 OnPropertyChanged();
             }
         }
@@ -63,7 +91,7 @@ namespace Presentation.ViewModel
 
                 _mainMap.CreateBalls(numberOfBalls);
                 OnPropertyChanged("GetBalls");
-                CheckButton();
+                CheckSummonClear();
             }
             catch(Exception)
             {
@@ -76,24 +104,66 @@ namespace Presentation.ViewModel
         {
             _mainMap.ClearMap();
             OnPropertyChanged("GetBalls");
-            CheckButton();
+            CheckSummonClear();
+            _resumeFlag = false;
+            _pauseFlag = false;
+            _resume.OnCanExecuteChanged();
+            _pause.OnCanExecuteChanged();
         }
 
-        private void CheckButton()
+        public void Resume()
         {
-            Button = !Button;
+            _pauseFlag = !_pauseFlag;
+            _resumeFlag = !_resumeFlag;
+            _resume.OnCanExecuteChanged();
+            _pause.OnCanExecuteChanged();
+        }
+
+        public void Pause()
+        {
+            _resumeFlag = !_resumeFlag;
+            _pauseFlag = !_pauseFlag;
+            _pause.OnCanExecuteChanged();
+            _resume.OnCanExecuteChanged();
+        }
+
+        private void CheckSummonClear()
+        {
+            _summonClearFlag = !_summonClearFlag;
             _start.OnCanExecuteChanged();
             _stop.OnCanExecuteChanged();
+            _resumeFlag = !_resumeFlag;
+            _resume.OnCanExecuteChanged();
         }
 
-        private bool CanButtonBeEnabled()
+        private bool CanSummonClearBeEnabled()
         {
-            return !Button;
+            return !_summonClearFlag;
         }
 
-        private bool CanButtonBeDisabled()
+        private bool CanResumeBeEnabled()
         {
-            return Button;
+            return !_resumeFlag;
+        }
+
+        private bool CanPauseBeEnabled()
+        {
+            return !_pauseFlag;
+        }
+
+        private bool CanSummonClearBeDisabled()
+        {
+            return _summonClearFlag;
+        }
+
+        private bool CanResumeBeDisabled()
+        {
+            return _resumeFlag;
+        }
+
+        private bool CanPauseBeDisabled()
+        {
+            return _pauseFlag;
         }
     }
 }
