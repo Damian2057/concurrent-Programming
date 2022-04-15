@@ -7,12 +7,13 @@ namespace Presentation.ViewModel
     public class ViewModelClass : BaseViewModel
     {
         private string _numberOfBalls;
-        public RelayCommand _start { get; }
-        public RelayCommand _stop { get; }
+        public RelayCommand _summon { get; }
+        public RelayCommand _clear { get; }
         public RelayCommand _pause { get; }
         public RelayCommand _resume { get; }
 
-        public bool _summonClearFlag = true;
+        public bool _summonFlag = true;
+        public bool _clearFlag = false;
         public bool _resumeFlag = false;
         public bool _pauseFlag = false;
 
@@ -25,10 +26,10 @@ namespace Presentation.ViewModel
         {
             _width = 1000;
             _height = 706;
-            _start = new RelayCommand(Start, CanSummonClearBeDisabled);
-            _stop = new RelayCommand(Stop, CanSummonClearBeEnabled);
-            _resume = new RelayCommand(Resume, CanResumeBeDisabled);
-            _pause = new RelayCommand(Pause, CanPauseBeDisabled);
+            _summon = new RelayCommand(Summon, SummonProperties);
+            _clear = new RelayCommand(Clear, ClearProperties);
+            _resume = new RelayCommand(Resume, ResumeProperties);
+            _pause = new RelayCommand(Pause, PauseProperties);
             _numberOfBalls = "";
             _mainMap = new MainMap(_width, _height);
         }
@@ -43,13 +44,24 @@ namespace Presentation.ViewModel
             }
         }
 
-        public bool SummonClearFlag
+        public bool SummonFlag
         {
-            get => _summonClearFlag;
+            get => _summonFlag;
 
             set
             {
-                _summonClearFlag = value;
+                _summonFlag = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool ClearFlag
+        {
+            get => _clearFlag;
+
+            set
+            {
+                _clearFlag = value;
                 OnPropertyChanged();
             }
         }
@@ -78,7 +90,7 @@ namespace Presentation.ViewModel
 
         public Ball[]? GetBalls { get => _mainMap.GetBalls().ToArray(); }
 
-        public void Start()
+        public void Summon()
         {
             try
             {
@@ -91,7 +103,12 @@ namespace Presentation.ViewModel
 
                 _mainMap.CreateBalls(numberOfBalls);
                 OnPropertyChanged("GetBalls");
-                CheckSummonClear();
+                _summonFlag = false;
+                _clearFlag = true;
+                _resumeFlag = true;
+                _resume.OnCanExecuteChanged();
+                _summon.OnCanExecuteChanged();
+                _clear.OnCanExecuteChanged();
             }
             catch(Exception)
             {
@@ -100,11 +117,15 @@ namespace Presentation.ViewModel
             }
         }
 
-        public void Stop()
+        public void Clear()
         {
             _mainMap.ClearMap();
             OnPropertyChanged("GetBalls");
-            CheckSummonClear();
+            _summonFlag = true;
+            _clearFlag = false;
+            _summon.OnCanExecuteChanged();
+            _clear.OnCanExecuteChanged();
+
             _resumeFlag = false;
             _pauseFlag = false;
             _resume.OnCanExecuteChanged();
@@ -127,41 +148,23 @@ namespace Presentation.ViewModel
             _resume.OnCanExecuteChanged();
         }
 
-        private void CheckSummonClear()
+
+        private bool SummonProperties()
         {
-            _summonClearFlag = !_summonClearFlag;
-            _start.OnCanExecuteChanged();
-            _stop.OnCanExecuteChanged();
-            _resumeFlag = !_resumeFlag;
-            _resume.OnCanExecuteChanged();
+            return _summonFlag;
         }
 
-        private bool CanSummonClearBeEnabled()
+        private bool ClearProperties()
         {
-            return !_summonClearFlag;
+            return _clearFlag;
         }
 
-        private bool CanResumeBeEnabled()
-        {
-            return !_resumeFlag;
-        }
-
-        private bool CanPauseBeEnabled()
-        {
-            return !_pauseFlag;
-        }
-
-        private bool CanSummonClearBeDisabled()
-        {
-            return _summonClearFlag;
-        }
-
-        private bool CanResumeBeDisabled()
+        private bool ResumeProperties()
         {
             return _resumeFlag;
         }
 
-        private bool CanPauseBeDisabled()
+        private bool PauseProperties()
         {
             return _pauseFlag;
         }

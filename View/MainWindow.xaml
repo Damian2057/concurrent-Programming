@@ -54,8 +54,8 @@
         </Rectangle>
         <TextBox IsEnabled="{Binding Button}" Text="{Binding NumberOfBalls}" HorizontalAlignment="Left" Margin="1024,56,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="232" Height="35" FontSize="20"/>
         <Label Content="Enter number of balls:" HorizontalAlignment="Left" Height="32" Margin="1024,19,0,0" VerticalAlignment="Top" Width="232" FontSize="22" FontFamily="Bahnschrift SemiBold"/>
-        <Button Content="Summon Balls" Command="{Binding _start}" HorizontalAlignment="Left" Background="#F5EEE6"  Height="40" Margin="1024,115,0,0" VerticalAlignment="Top" Width="232" FontFamily="Bahnschrift SemiBold"/>
-        <Button Content="Clear Map" Command="{Binding _stop}" HorizontalAlignment="Left" Height="40" Background="#C86B85" Margin="1024,257,0,0" VerticalAlignment="Top" Width="232" FontFamily="Bahnschrift SemiBold"/>
+        <Button Content="Summon Balls" Command="{Binding _summon}" HorizontalAlignment="Left" Background="#F5EEE6"  Height="40" Margin="1024,115,0,0" VerticalAlignment="Top" Width="232" FontFamily="Bahnschrift SemiBold"/>
+        <Button Content="Clear Map" Command="{Binding _clear}" HorizontalAlignment="Left" Height="40" Background="#C86B85" Margin="1024,257,0,0" VerticalAlignment="Top" Width="232" FontFamily="Bahnschrift SemiBold"/>
         <Button Content="Resume" Command="{Binding _resume}" HorizontalAlignment="Left" Height="55" Background="#F5EEE6" Margin="1024,178,0,0" VerticalAlignment="Top" Width="99" FontFamily="Bahnschrift"/>
         <Button Content="Pause" Command="{Binding _pause}" HorizontalAlignment="Left" Height="55" Background="#F5EEE6" Margin="1157,178,0,0" VerticalAlignment="Top" Width="99" FontFamily="Bahnschrift"/>
 
