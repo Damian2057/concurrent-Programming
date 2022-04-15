@@ -88,7 +88,7 @@ namespace Presentation.ViewModel
             }
         }
 
-        public Ball[]? GetBalls { get => _mainMap.GetBalls().ToArray(); }
+        public Object[]? GetBalls { get => _mainMap.GetBalls().ToArray(); }
 
         public void Summon()
         {
