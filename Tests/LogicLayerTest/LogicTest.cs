@@ -84,7 +84,7 @@ namespace Tests.LogicTest
                 + ballsManager.GetBallByID(1).XDirection
                 + ballsManager.GetBallsMinRadius() > ballsManager.GetMapWidth() || ballsManager.GetBallByID(1).XPos
                 + ballsManager.GetBallByID(1).XDirection
-                + ballsManager.GetBallsMinRadius() < 0)
+                + ballsManager.GetBallsMinRadius() < 2*ballsManager.GetBallByID(1).Radius)
             {
                 xPredictedHeading = xHeading * (-1);
             }
@@ -107,7 +107,7 @@ namespace Tests.LogicTest
                 + ballsManager.GetBallByID(1).YDirection
                 + ballsManager.GetBallsMinRadius() > ballsManager.GetMapHeight() || ballsManager.GetBallByID(1).YPos
                 + ballsManager.GetBallByID(1).YDirection
-                + ballsManager.GetBallsMinRadius() < 0)
+                + ballsManager.GetBallsMinRadius() < 2 * ballsManager.GetBallByID(1).Radius)
             {
                 yPredictedHeading = yHeading * (-1);
             }

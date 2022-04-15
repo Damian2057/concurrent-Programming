@@ -106,11 +106,11 @@ namespace LogicLayer
             //TODO: add ball radius to condition
             foreach (Ball ball in GetAllBalls())
             {
-                if (ball.XPos + ball.XDirection + ball.Radius < 0 || ball.XPos + ball.XDirection + ball.Radius > _mapWidth)
+                if (ball.XPos + ball.XDirection + ball.Radius < ball.Radius*2 || ball.XPos + ball.XDirection + ball.Radius > _mapWidth)
                 {
                     ball.XDirection = ball.XDirection * (-1);
                 }
-                if (ball.YPos + ball.YDirection + ball.Radius < 0 || ball.YPos + ball.YDirection + ball.Radius > _mapHeight)
+                if (ball.YPos + ball.YDirection + ball.Radius < ball.Radius*2 || ball.YPos + ball.YDirection + ball.Radius > _mapHeight)
                 {
                     ball.YDirection = ball.YDirection * (-1);
                 }
