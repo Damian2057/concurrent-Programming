@@ -42,20 +42,20 @@ namespace LogicLayer
             return _ballMaxRadius;
         }
 
-        public void CreateBall(int ID, int x, int y, int xDirectory, int yDirectory) 
+        public void CreateBall(int ID, int x, int y, int xDirection, int yDirection) 
         {
-            if(CheckForDuplicateID(ID) 
+            if(CheckForExistingID(ID) 
                || (x < _ballMinRadius || x > _mapWidth - _ballMinRadius 
                          || y < _ballMinRadius || y > _mapHeight - _ballMinRadius 
-                         || yDirectory > _mapHeight - _ballMinRadius || yDirectory < ((-1) * _mapHeight + _ballMinRadius) 
-                         || xDirectory > _mapWidth - _ballMinRadius || xDirectory < ((-1) * _mapWidth + _ballMinRadius)))
+                         || yDirection > _mapHeight - _ballMinRadius || yDirection < ((-1) * _mapHeight + _ballMinRadius) 
+                         || xDirection > _mapWidth - _ballMinRadius || xDirection < ((-1) * _mapWidth + _ballMinRadius)))
             {
                 throw new InvalidDataException("The ball parameters entered are invalid");
             }
             else
             {
                 Random rnd = new Random();
-                Ball newBall = new Ball(ID, x, y, rnd.Next(_ballMinRadius, _ballMaxRadius), xDirectory, yDirectory);
+                Ball newBall = new Ball(ID, x, y, rnd.Next(_ballMinRadius, _ballMaxRadius), xDirection, yDirection);
                 _objectStorage.AddBall(newBall);
             }
         }
@@ -118,7 +118,7 @@ namespace LogicLayer
             }
         }
 
-        public bool CheckForDuplicateID(int ID)
+        public bool CheckForExistingID(int ID)
         {
             foreach (Ball obj in _objectStorage.GetAllBalls())
             {

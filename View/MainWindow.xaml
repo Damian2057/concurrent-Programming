@@ -1,6 +1,6 @@
 ﻿<Window
     
-    Title="MainWindow"
+    Title="Balls App"
     mc:Ignorable="d"
     SizeToContent="WidthAndHeight"
     ResizeMode="NoResize"

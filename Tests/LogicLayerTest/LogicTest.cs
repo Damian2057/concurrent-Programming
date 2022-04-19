@@ -13,6 +13,26 @@ namespace Tests.LogicTest
             BallsManager ballsManager = new BallsManager(150, 100);
             Assert.AreEqual(ballsManager.GetMapWidth(),150);
             Assert.AreEqual(ballsManager.GetMapHeight(), 100);
+
+            Assert.IsTrue(ballsManager.GetMapWidth() >= 0);
+            Assert.IsTrue(ballsManager.GetMapHeight() >= 0);
+            Assert.IsTrue(ballsManager.GetBallsMaxRadius() >= 0);
+            Assert.IsTrue(ballsManager.GetBallsMinRadius() >= 0);
+        }
+
+        [TestMethod]
+        public void GetBallByIDTest()
+        {
+            BallsManager ballsManager = new BallsManager(150, 100);
+            ballsManager.CreateBall(0, 5, 5, 1, 1);
+            ballsManager.CreateBall(1, 5, 5, 1, 1);
+            ballsManager.CreateBall(2, 5, 5, 1, 1);
+
+            Assert.IsTrue(ballsManager.CheckForExistingID(0));
+            Assert.IsTrue(ballsManager.CheckForExistingID(1));
+            Assert.IsTrue(ballsManager.CheckForExistingID(2));
+            Assert.IsFalse(ballsManager.CheckForExistingID(3));
+
         }
 
         [TestMethod]
@@ -22,8 +42,8 @@ namespace Tests.LogicTest
             Assert.AreEqual(0, ballsManager.GetAllBalls().Count);
             ballsManager.CreateBall(0,5,5,10,10);
             Assert.AreEqual(1, ballsManager.GetAllBalls().Count);
-            Assert.IsTrue(ballsManager.CheckForDuplicateID(0));
-            Assert.IsFalse(ballsManager.CheckForDuplicateID(1));
+            Assert.IsTrue(ballsManager.CheckForExistingID(0));
+            Assert.IsFalse(ballsManager.CheckForExistingID(1));
             Assert.AreEqual(1,ballsManager.AutoID());
             ballsManager.ClearMap();
             Assert.AreEqual(0, ballsManager.GetAllBalls().Count);
@@ -37,9 +57,9 @@ namespace Tests.LogicTest
             ballsManager.GenerateRandomBall();
             ballsManager.GenerateRandomBall();
             Assert.AreEqual(3, ballsManager.GetAllBalls().Count);
-            Assert.IsTrue(ballsManager.CheckForDuplicateID(1));
-            Assert.IsTrue(ballsManager.CheckForDuplicateID(2));
-            Assert.IsTrue(ballsManager.CheckForDuplicateID(3));
+            Assert.IsTrue(ballsManager.CheckForExistingID(1));
+            Assert.IsTrue(ballsManager.CheckForExistingID(2));
+            Assert.IsTrue(ballsManager.CheckForExistingID(3));
             Assert.ThrowsException<InvalidDataException>(() => ballsManager.GetBallByID(4));
             Assert.ThrowsException<InvalidDataException>(() => ballsManager.RemoveBallByID(4));
 

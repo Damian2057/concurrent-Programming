@@ -100,9 +100,9 @@ namespace Presentation.ViewModel
             {
                 int numberOfBalls = int.Parse(_numberOfBalls);
 
-                if(numberOfBalls < 0)
+                if(numberOfBalls < 1)
                 {
-                    throw new ArgumentException("Number of balls is less than 0");
+                    throw new ArgumentException("Number of balls is less than 1");
                 }
 
                 _mainMap.CreateBalls(numberOfBalls);

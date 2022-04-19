@@ -16,6 +16,13 @@ namespace Tests.DataTest
             Assert.AreEqual(3, ball.YDirection);
             Assert.AreEqual(0, ball.GetID());
             Assert.AreEqual(0, ball.Radius);
+
+            Assert.IsTrue(ball.XPos >= 0);
+            Assert.IsTrue(ball.YPos >= 0);
+            Assert.IsTrue(ball.XDirection >= 0);
+            Assert.IsTrue(ball.YDirection >= 0);
+            Assert.IsTrue(ball.GetID() >= 0);
+            Assert.IsTrue(ball.Radius >= 0);
         }
 
         [TestMethod]
