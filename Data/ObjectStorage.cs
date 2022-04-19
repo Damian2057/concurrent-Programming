@@ -31,6 +31,5 @@ namespace Data
         {
             _balls.Clear();
         }
-
     }
 }

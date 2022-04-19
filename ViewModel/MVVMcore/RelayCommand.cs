@@ -11,8 +11,7 @@ namespace Presentation.ViewModel.MVVMcore
     {
         public event EventHandler? CanExecuteChanged;
         private readonly Action _canBeExecuteAction;
-        private readonly Func<bool>? _canBeFuctionExecute;
-
+        private readonly Func<bool>? _canBeFunctionExecute;
 
         internal void OnCanExecuteChanged()
         {
@@ -21,13 +20,13 @@ namespace Presentation.ViewModel.MVVMcore
 
         public bool CanExecute(object? parameter)
         {
-            if (_canBeFuctionExecute == null)
+            if (_canBeFunctionExecute == null)
             {
                 return true;
             }
             else
             {
-                return _canBeFuctionExecute();
+                return _canBeFunctionExecute();
             }
         }
 
@@ -39,7 +38,7 @@ namespace Presentation.ViewModel.MVVMcore
         public RelayCommand(Action action, Func<bool>? function = null)
         {
             _canBeExecuteAction = action ?? throw new ArgumentNullException(nameof(action));
-            _canBeFuctionExecute = function;
+            _canBeFunctionExecute = function;
         }
     }
 }

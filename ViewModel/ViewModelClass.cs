@@ -26,12 +26,16 @@ namespace Presentation.ViewModel
         {
             _width = 1000;
             _height = 706;
+            _numberOfBalls = "";
             _summon = new RelayCommand(Summon, SummonProperties);
             _clear = new RelayCommand(Clear, ClearProperties);
             _resume = new RelayCommand(Resume, ResumeProperties);
             _pause = new RelayCommand(Pause, PauseProperties);
-            _numberOfBalls = "";
             _mainMap = new MainMap(_width, _height);
+            SummonFlag = true;
+            ClearFlag = false;
+            ResumeFlag = false;
+            PauseFlag = false;
         }
 
         public string NumberOfBalls
@@ -51,7 +55,7 @@ namespace Presentation.ViewModel
             set
             {
                 _summonFlag = value;
-                OnPropertyChanged();
+                _summon.OnCanExecuteChanged();
             }
         }
 
@@ -62,7 +66,7 @@ namespace Presentation.ViewModel
             set
             {
                 _clearFlag = value;
-                OnPropertyChanged();
+                _clear.OnCanExecuteChanged();
             }
         }
 
@@ -73,7 +77,7 @@ namespace Presentation.ViewModel
             set
             {
                 _resumeFlag = value;
-                OnPropertyChanged();
+                _resume.OnCanExecuteChanged();
             }
         }
 
@@ -84,7 +88,7 @@ namespace Presentation.ViewModel
             set
             {
                 _pauseFlag = value;
-                OnPropertyChanged();
+                _pause.OnCanExecuteChanged();
             }
         }
 
@@ -103,38 +107,30 @@ namespace Presentation.ViewModel
 
                 _mainMap.CreateBalls(numberOfBalls);
                 OnPropertyChanged("GetBalls");
-                _summonFlag = false;
-                _clearFlag = true;
-                _resumeFlag = true;
-                _resume.OnCanExecuteChanged();
-                _summon.OnCanExecuteChanged();
-                _clear.OnCanExecuteChanged();
+                SummonFlag = false;
+                ClearFlag = true;
+                ResumeFlag = true;
             }
-            catch(Exception)
+            catch (Exception)
             {
-                _numberOfBalls = "";
-                OnPropertyChanged();
+                NumberOfBalls = "";
             }
         }
 
         public void Clear()
         {
+            NumberOfBalls = "";
             _mainMap.ClearMap();
             OnPropertyChanged("GetBalls");
-            _summonFlag = true;
-            _clearFlag = false;
-            _summon.OnCanExecuteChanged();
-            _clear.OnCanExecuteChanged();
-
-            _resumeFlag = false;
-            _pauseFlag = false;
-            _resume.OnCanExecuteChanged();
-            _pause.OnCanExecuteChanged();
+            SummonFlag = true;
+            ClearFlag = false;
+            ResumeFlag = false;
+            PauseFlag = false;
         }
 
         public async void Tick()
         {
-            while (_pauseFlag)
+            while (PauseFlag)
             {
                 await Task.Delay(10);
                 _mainMap.Tick();
@@ -144,40 +140,35 @@ namespace Presentation.ViewModel
 
         public void Resume()
         {
-            _pauseFlag = true;
-            _resumeFlag = false;
-            _resume.OnCanExecuteChanged();
-            _pause.OnCanExecuteChanged();
+            PauseFlag = true;
+            ResumeFlag = false;
             Tick();
         }
 
         public void Pause()
         {
-            _resumeFlag = true;
-            _pauseFlag = false;
-            _pause.OnCanExecuteChanged();
-            _resume.OnCanExecuteChanged();
+            ResumeFlag = true;
+            PauseFlag = false;
         }
-
 
         private bool SummonProperties()
         {
-            return _summonFlag;
+            return SummonFlag;
         }
 
         private bool ClearProperties()
         {
-            return _clearFlag;
+            return ClearFlag;
         }
 
         private bool ResumeProperties()
         {
-            return _resumeFlag;
+            return ResumeFlag;
         }
 
         private bool PauseProperties()
         {
-            return _pauseFlag;
+            return PauseFlag;
         }
     }
 }

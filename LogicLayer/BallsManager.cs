@@ -42,7 +42,6 @@ namespace LogicLayer
             return _ballMaxRadius;
         }
 
-
         public void CreateBall(int ID, int x, int y, int xDirectory, int yDirectory) 
         {
             if(CheckForDuplicateID(ID) 
