@@ -10,7 +10,7 @@ namespace Tests.LogicTest
         [TestMethod]
         public void BallsManagerConstructorTest()
         {
-            BallsManager ballsManager = new BallsManager(150, 100);
+            BallService ballsManager = new BallService(150, 100);
             Assert.AreEqual(ballsManager.GetMapWidth(),150);
             Assert.AreEqual(ballsManager.GetMapHeight(), 100);
 
@@ -23,7 +23,10 @@ namespace Tests.LogicTest
         [TestMethod]
         public void GetBallByIDTest()
         {
-            BallsManager ballsManager = new BallsManager(150, 100);
+            BallService ballsManager = new BallService(150, 100);
+
+            Assert.AreEqual(ballsManager.AutoId(), 1);
+            Assert.IsFalse(ballsManager.CheckForExistingID(0));
             ballsManager.CreateBall(0, 5, 5, 1, 1);
             ballsManager.CreateBall(1, 5, 5, 1, 1);
             ballsManager.CreateBall(2, 5, 5, 1, 1);
@@ -31,20 +34,32 @@ namespace Tests.LogicTest
             Assert.IsTrue(ballsManager.CheckForExistingID(0));
             Assert.IsTrue(ballsManager.CheckForExistingID(1));
             Assert.IsTrue(ballsManager.CheckForExistingID(2));
+
+            Assert.AreEqual(ballsManager.GetAllBalls().Count, 3);
+
             Assert.IsFalse(ballsManager.CheckForExistingID(3));
 
+            ballsManager.RemoveBallByID(2);
+            Assert.IsFalse(ballsManager.CheckForExistingID(2));
+            Assert.AreEqual(ballsManager.GetAllBalls().Count, 2);
+            Assert.AreEqual(ballsManager.AutoId(), 2);
+
+            Assert.ThrowsException<InvalidDataException>(() => ballsManager.RemoveBallByID(1337));
+            Assert.ThrowsException<InvalidDataException>(() => ballsManager.GetBallByID(1337));
+            Assert.ThrowsException<InvalidDataException>(() => ballsManager.CreateBall(1, 5, 5, 5, 5));
+            
         }
 
         [TestMethod]
         public void BallsManagerStorageManagementTest()
         {
-            BallsManager ballsManager = new BallsManager(150, 100);
+            BallService ballsManager = new BallService(150, 100);
             Assert.AreEqual(0, ballsManager.GetAllBalls().Count);
             ballsManager.CreateBall(0,5,5,10,10);
             Assert.AreEqual(1, ballsManager.GetAllBalls().Count);
             Assert.IsTrue(ballsManager.CheckForExistingID(0));
             Assert.IsFalse(ballsManager.CheckForExistingID(1));
-            Assert.AreEqual(1,ballsManager.AutoID());
+            Assert.AreEqual(1,ballsManager.AutoId());
             ballsManager.ClearMap();
             Assert.AreEqual(0, ballsManager.GetAllBalls().Count);
         }
@@ -52,7 +67,7 @@ namespace Tests.LogicTest
         [TestMethod]
         public void BallRandomGeneratorTest()
         {
-            BallsManager ballsManager = new BallsManager(150, 100);
+            BallService ballsManager = new BallService(150, 100);
             ballsManager.GenerateRandomBall();
             ballsManager.GenerateRandomBall();
             ballsManager.GenerateRandomBall();
@@ -83,7 +98,7 @@ namespace Tests.LogicTest
         [DataRow(1, 5, 5, -51, -51)]
         public void BallManagerExceptionTest(int ID,int xPos, int yPos, int xD, int yD)
         {
-            BallsManager ballsManager = new BallsManager(50, 50);
+            BallService ballsManager = new BallService(50, 50);
             Assert.ThrowsException<InvalidDataException>(() => ballsManager.CreateBall(ID,xPos, yPos,xD,yD));
             Assert.AreEqual(0,ballsManager.GetAllBalls().Count);
         }
@@ -91,7 +106,7 @@ namespace Tests.LogicTest
         [TestMethod]
         public void TickTest()
         {
-            BallsManager ballsManager = new BallsManager(150, 100);
+            BallService ballsManager = new BallService(150, 100);
             //XY CORDS
             ballsManager.SummonBalls(2);
             int xCurrentPos = ballsManager.GetBallByID(1).XPos;
@@ -102,9 +117,9 @@ namespace Tests.LogicTest
 
             if (ballsManager.GetBallByID(1).XPos
                 + ballsManager.GetBallByID(1).XDirection
-                + ballsManager.GetBallsMinRadius() > ballsManager.GetMapWidth() || ballsManager.GetBallByID(1).XPos
+                + ballsManager.GetBallByID(1).Radius > ballsManager.GetMapWidth() || ballsManager.GetBallByID(1).XPos
                 + ballsManager.GetBallByID(1).XDirection
-                + ballsManager.GetBallsMinRadius() < 2*ballsManager.GetBallByID(1).Radius)
+                + ballsManager.GetBallByID(1).Radius < 2*ballsManager.GetBallByID(1).Radius) // tu chyba powinno byc 0
             {
                 xPredictedHeading = xHeading * (-1);
             }
@@ -125,9 +140,9 @@ namespace Tests.LogicTest
 
             if (ballsManager.GetBallByID(1).YPos
                 + ballsManager.GetBallByID(1).YDirection
-                + ballsManager.GetBallsMinRadius() > ballsManager.GetMapHeight() || ballsManager.GetBallByID(1).YPos
+                + ballsManager.GetBallByID(1).Radius > ballsManager.GetMapHeight() || ballsManager.GetBallByID(1).YPos
                 + ballsManager.GetBallByID(1).YDirection
-                + ballsManager.GetBallsMinRadius() < 2 * ballsManager.GetBallByID(1).Radius)
+                + ballsManager.GetBallByID(1).Radius < 2 * ballsManager.GetBallByID(1).Radius)
             {
                 yPredictedHeading = yHeading * (-1);
             }

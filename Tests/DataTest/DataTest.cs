@@ -23,6 +23,7 @@ namespace Tests.DataTest
             Assert.IsTrue(ball.YDirection >= 0);
             Assert.IsTrue(ball.GetID() >= 0);
             Assert.IsTrue(ball.Radius >= 0);
+            Assert.IsNotNull(ball.color);
         }
 
         [TestMethod]
@@ -51,9 +52,19 @@ namespace Tests.DataTest
         [TestMethod]
         public void ColorTest()
         {
-            Ball ball = new Ball(1, 0, 1, 0, 2, 3);
+            //test for a color selected from a premade array
+            Ball ball = new Ball(1, 0, 1, 0, 2, 3); 
             Assert.IsTrue(ball.color != "");
             Assert.IsTrue(ball.color is not null);
+            Assert.IsTrue(ball.color.Length == 7);
+            Assert.IsTrue(ball.color.StartsWith("#"));
+
+            //test for a pseudorandom color
+            Ball ball2 = new Ball(1337, 5, 5, 5, 5, 5);
+            Assert.IsTrue(ball2.color != "");
+            Assert.IsTrue(ball2.color is not null);
+            Assert.IsTrue(ball2.color.Length == 7);
+            Assert.IsTrue(ball2.color.StartsWith("#"));
         }
     }
 }

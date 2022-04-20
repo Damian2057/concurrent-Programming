@@ -5,35 +5,35 @@ namespace Presentation.Model
 {
     public class MainMap
     {
-        private readonly BallsManager _ballsManager;
+        private readonly BallService _ballService;
         private int _width;
         private int _height;
 
         public void Tick()
         {
-           _ballsManager.DoTick();
+           _ballService.DoTick();
         }
 
         public MainMap(int w, int h)
         {
             _width = w;
             _height = h;
-            _ballsManager = new BallsManager(_width, _height);
+            _ballService = new BallService(_width, _height);
         }
 
         public List<Ball> GetBalls()
         {
-            return _ballsManager.GetAllBalls();
+            return _ballService.GetAllBalls();
         }
 
         public void CreateBalls(int amount) 
         {
-            _ballsManager.SummonBalls(amount);
+            _ballService.SummonBalls(amount);
         }
 
         public void ClearMap()
         {
-            _ballsManager.ClearMap();
+            _ballService.ClearMap();
         }
     }
 }

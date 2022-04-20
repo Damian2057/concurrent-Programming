@@ -10,11 +10,16 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:v="clr-namespace:Presentation.ViewModel;assembly=ViewModel" Width="1280" Height="722">
+
     <Window.DataContext>
         <v:ViewModelClass/>
     </Window.DataContext>
     <Grid>
-        <ItemsControl ItemsSource="{Binding GetBalls}" Margin="0,0,280,0" Width="{Binding _width}" Height="{Binding _height}">
+        <ItemsControl ItemsSource="{Binding GetBalls}"
+                      Margin="0,0,280,0" 
+                      Width="{Binding _width}" 
+                      Height="{Binding _height}" 
+                      IsTabStop="False">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <Canvas>
@@ -37,27 +42,101 @@
                 <DataTemplate>
                     <Path Fill="{Binding color}" Stroke="Black">
                         <Path.Data>
-                            <EllipseGeometry RadiusX="{Binding Radius}" RadiusY="{Binding Radius}"/>
+                            <EllipseGeometry RadiusX="{Binding Radius}"
+                                             RadiusY="{Binding Radius}"/>
                         </Path.Data>
                     </Path>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
 
-        <Rectangle HorizontalAlignment="Left" Height="706" Margin="1000,0,0,0" Stroke="Black" VerticalAlignment="Center" Width="280">
+        <Rectangle HorizontalAlignment="Left"
+                   Height="706" 
+                   Margin="1000,0,0,0"
+                   Stroke="Black" 
+                   VerticalAlignment="Center" 
+                   Width="280">
             <Rectangle.Fill>
-                <LinearGradientBrush StartPoint="0,1" EndPoint="1,1">
+                <LinearGradientBrush StartPoint="0,1"
+                                     EndPoint="1,1">
                     <GradientStop Color="#F3D7CA" Offset="0.0" />
                     <GradientStop Color="#F3D7CA" Offset="1.0" />
                 </LinearGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
-        <TextBox IsEnabled="{Binding Button}" Text="{Binding NumberOfBalls}" HorizontalAlignment="Left" Margin="1024,56,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="232" Height="35" FontSize="20"/>
-        <Label Content="Enter number of balls:" HorizontalAlignment="Left" Height="32" Margin="1024,19,0,0" VerticalAlignment="Top" Width="232" FontSize="22" FontFamily="Bahnschrift SemiBold"/>
-        <Button Content="Summon Balls" Command="{Binding _summon}" HorizontalAlignment="Left" Background="#F5EEE6"  Height="40" Margin="1024,115,0,0" VerticalAlignment="Top" Width="232" FontFamily="Bahnschrift SemiBold"/>
-        <Button Content="Clear Map" Command="{Binding _clear}" HorizontalAlignment="Left" Height="40" Background="#C86B85" Margin="1024,257,0,0" VerticalAlignment="Top" Width="232" FontFamily="Bahnschrift SemiBold"/>
-        <Button Content="Resume" Command="{Binding _resume}" HorizontalAlignment="Left" Height="55" Background="#F5EEE6" Margin="1024,178,0,0" VerticalAlignment="Top" Width="99" FontFamily="Bahnschrift"/>
-        <Button Content="Pause" Command="{Binding _pause}" HorizontalAlignment="Left" Height="55" Background="#F5EEE6" Margin="1157,178,0,0" VerticalAlignment="Top" Width="99" FontFamily="Bahnschrift"/>
+
+        <TextBox Name="TextBox" 
+                 IsEnabled="{Binding Button}" 
+                 Text="{Binding NumberOfBalls}" 
+                 HorizontalAlignment="Left" 
+                 Margin="1024,56,0,0" 
+                 TextWrapping="Wrap" 
+                 VerticalAlignment="Top" 
+                 Width="232" Height="35" 
+                 FontSize="20" 
+                 Cursor="IBeam" 
+                 MaxLines="1"
+                 MaxLength="3"
+                 FontFamily="Segoe UI"/>
+
+        <Label Name="EnterNumberOfBallsLabel" 
+               Content="Enter number of balls:" 
+               HorizontalAlignment="Left" 
+               Height="32" 
+               Margin="1024,19,0,0" 
+               VerticalAlignment="Top" 
+               Width="232" 
+               FontSize="22" 
+               FontFamily="Bahnschrift SemiBold"/>
+
+        <Button Name="SummonBallsButton" 
+                Content="Summon Balls" 
+                Command="{Binding _summon}" 
+                HorizontalAlignment="Left" 
+                Background="#F5EEE6"  
+                Height="40" 
+                Margin="1024,115,0,0" 
+                VerticalAlignment="Top" 
+                Width="232" 
+                FontFamily="Bahnschrift SemiBold"
+                Cursor="Hand"/>
+
+        <Button Name="ClearMapButton"
+                Content="Clear Map" 
+                Command="{Binding _clear}"
+                HorizontalAlignment="Left" 
+                Height="40" 
+                Background="#C86B85" 
+                Margin="1024,257,0,0" 
+                VerticalAlignment="Top" 
+                Width="232" 
+                FontFamily="Bahnschrift SemiBold" 
+                Cursor="Hand"
+                IsCancel="True"/>
+
+        <Button Name="ResumeButton"
+                Content="Resume" 
+                Command="{Binding _resume}" 
+                HorizontalAlignment="Left" 
+                Height="55" 
+                Background="#F5EEE6" 
+                Margin="1024,178,0,0" 
+                VerticalAlignment="Top" 
+                Width="99" 
+                FontFamily="Bahnschrift" 
+                Cursor="Hand"/>
+
+        <Button Name="PauseButton" 
+                Content="Pause" 
+                Command="{Binding _pause}" 
+                HorizontalAlignment="Left" 
+                Height="55" 
+                Background="#F5EEE6" 
+                Margin="1157,178,0,0" 
+                VerticalAlignment="Top" 
+                Width="99" 
+                FontFamily="Bahnschrift" 
+                Cursor="Hand"/>
 
     </Grid>
 </Window>

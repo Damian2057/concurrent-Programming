@@ -18,7 +18,7 @@
             XDirection = xDir;
             YDirection = yDir;
             Radius = radius;
-            color = Color.PickColor();
+            color = ID <= 200 ? Color.PickColor() : Color.PickRandomColor();
         }
 
         public int GetID()

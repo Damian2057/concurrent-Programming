@@ -5,7 +5,7 @@ using InvalidDataException = LogicLayer.Exceptions.InvalidDataException;
 
 namespace LogicLayer
 {
-    public class BallsManager
+    public class BallService
     {
         private readonly int _mapWidth;
         private readonly int _mapHeight;
@@ -13,12 +13,12 @@ namespace LogicLayer
         private readonly int _ballMinRadius;
         private readonly int _ballMaxRadius;
 
-        public BallsManager(int mapWidth, int mapHeight)
+        public BallService(int mapWidth, int mapHeight)
         {
             _mapHeight = mapHeight;
             _mapWidth = mapWidth;
             _ballMinRadius = Math.Min(mapHeight, mapWidth) / 60;
-            _ballMaxRadius = Math.Max(mapWidth, mapHeight) / 30;
+            _ballMaxRadius = Math.Max(mapWidth, mapHeight) / 20;
 
         }
 
@@ -64,14 +64,14 @@ namespace LogicLayer
         {
             Random rnd = new Random();
             int xrand = 0, yrand = 0; 
-            while(xrand == 0 && yrand == 0)
+            while(xrand == 0 || yrand == 0)
             {
                 xrand = rnd.Next(-5, 5);
                 yrand = rnd.Next(-5, 5);
             }
             
 
-            CreateBall(AutoID()
+            CreateBall(AutoId()
                 , rnd.Next(_ballMaxRadius, _mapWidth - _ballMaxRadius)
                 ,rnd.Next(_ballMaxRadius, _mapHeight - _ballMaxRadius)
                 , xrand
@@ -86,7 +86,7 @@ namespace LogicLayer
             }
         }
 
-        public int AutoID()
+        public int AutoId()
         {
             int max = 0;
             foreach (Ball ball in GetAllBalls())
@@ -102,7 +102,7 @@ namespace LogicLayer
 
         public void DoTick()
         {
-            //TODO: add ball radius to condition
+            
             foreach (Ball ball in GetAllBalls())
             {
                 if (ball.XPos + ball.XDirection + ball.Radius < ball.Radius*2 || ball.XPos + ball.XDirection + ball.Radius > _mapWidth)

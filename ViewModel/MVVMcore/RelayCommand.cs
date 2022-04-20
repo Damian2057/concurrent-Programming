@@ -10,8 +10,8 @@ namespace Presentation.ViewModel.MVVMcore
     public class RelayCommand : ICommand
     {
         public event EventHandler? CanExecuteChanged;
-        private readonly Action _canBeExecuteAction;
-        private readonly Func<bool>? _canBeFunctionExecute;
+        private readonly Action _execute;
+        private readonly Func<bool>? _canExecute;
 
         internal void OnCanExecuteChanged()
         {
@@ -20,25 +20,18 @@ namespace Presentation.ViewModel.MVVMcore
 
         public bool CanExecute(object? parameter)
         {
-            if (_canBeFunctionExecute == null)
-            {
-                return true;
-            }
-            else
-            {
-                return _canBeFunctionExecute();
-            }
+            return this._canExecute == null || this._canExecute();
         }
 
         public void Execute(object? parameter)
         {
-            _canBeExecuteAction();
+            this._execute();
         }
 
-        public RelayCommand(Action action, Func<bool>? function = null)
+        public RelayCommand(Action execute, Func<bool>? canExecute)
         {
-            _canBeExecuteAction = action ?? throw new ArgumentNullException(nameof(action));
-            _canBeFunctionExecute = function;
+            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
+            _canExecute = canExecute;
         }
     }
 }
