@@ -4,37 +4,52 @@ using System.Collections.Generic;
 
 namespace Presentation.Model
 {
-    public class MainMap
+
+    public abstract class MainMapApi
     {
-        private readonly BallService _ballService;
-        private int _width;
-        private int _height;
-
-        public void Tick()
+        public static MainMapApi createMap(int w, int h)
         {
-           _ballService.DoTick();
+            return new MainMap(w, h);
         }
 
-        public MainMap(int w, int h)
-        {
-            _width = w;
-            _height = h;
-            _ballService = new BallService(_width, _height);
-        }
+        public abstract void Tick();
+        public abstract List<BallApi> GetBalls();
+        public abstract void CreateBalls(int amount);
+        public abstract void ClearMap();
 
-        public List<Ball> GetBalls()
-        {
-            return _ballService.GetAllBalls();
-        }
 
-        public void CreateBalls(int amount) 
+        private class MainMap : MainMapApi
         {
-            _ballService.SummonBalls(amount);
-        }
+            private readonly BallServiceApi _ballService;
+            private int _width;
+            private int _height;
 
-        public void ClearMap()
-        {
-            _ballService.ClearMap();
+            public override void Tick()
+            {
+                _ballService.DoTick();
+            }
+
+            public MainMap(int w, int h)
+            {
+                _width = w;
+                _height = h;
+                _ballService = BallServiceApi.CreateLogic(_width, _height);
+            }
+
+            public override List<BallApi> GetBalls()
+            {
+                return _ballService.GetAllBalls();
+            }
+
+            public override void CreateBalls(int amount)
+            {
+                _ballService.SummonBalls(amount);
+            }
+
+            public override void ClearMap()
+            {
+                _ballService.ClearMap();
+            }
         }
     }
 }

@@ -2,6 +2,7 @@
 using Presentation.Model;
 using System;
 using System.Threading.Tasks;
+using Data;
 
 namespace Presentation.ViewModel
 {
@@ -18,7 +19,7 @@ namespace Presentation.ViewModel
         public bool _resumeFlag = false;
         public bool _pauseFlag = false;
 
-        public MainMap _mainMap{ get; }
+        public MainMapApi _mainMap { get; }
 
         public int _width { get; }
         public int _height { get; }
@@ -32,7 +33,7 @@ namespace Presentation.ViewModel
             _clear = new RelayCommand(Clear, ClearProperties);
             _resume = new RelayCommand(Resume, ResumeProperties);
             _pause = new RelayCommand(Pause, PauseProperties);
-            _mainMap = new MainMap(_width, _height);
+            _mainMap = MainMapApi.createMap(_width, _height);
             SummonFlag = true;
             ClearFlag = false;
             ResumeFlag = false;
@@ -93,7 +94,7 @@ namespace Presentation.ViewModel
             }
         }
 
-        public Object[]? GetBalls { get => _mainMap.GetBalls().ToArray(); }
+        public BallApi[]? GetBalls { get => _mainMap.GetBalls().ToArray(); }
 
         public void Summon()
         {
@@ -101,7 +102,7 @@ namespace Presentation.ViewModel
             {
                 int numberOfBalls = int.Parse(_numberOfBalls);
 
-                if(numberOfBalls < 1)
+                if (numberOfBalls < 1)
                 {
                     throw new ArgumentException("Number of balls is less than 1");
                 }

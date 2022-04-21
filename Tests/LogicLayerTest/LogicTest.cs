@@ -1,3 +1,4 @@
+using System.Linq;
 using LogicLayer;
 using LogicLayer.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -8,105 +9,31 @@ namespace Tests.LogicTest
     public class LogicTest
     {
         [TestMethod]
-        public void BallsManagerConstructorTest()
+        public void BallServiceTest()
         {
-            BallService ballsManager = new BallService(150, 100);
-            Assert.AreEqual(ballsManager.GetMapWidth(),150);
-            Assert.AreEqual(ballsManager.GetMapHeight(), 100);
+            var service = BallServiceApi.CreateLogic(150, 100);
+            service.SummonBalls(10);
+            Assert.AreEqual(service.GetAllBalls().Count, 10);
+            Assert.AreEqual(service.GetBallByID(1).BallID, 1);
 
-            Assert.IsTrue(ballsManager.GetMapWidth() >= 0);
-            Assert.IsTrue(ballsManager.GetMapHeight() >= 0);
-            Assert.IsTrue(ballsManager.GetBallsMaxRadius() >= 0);
-            Assert.IsTrue(ballsManager.GetBallsMinRadius() >= 0);
-        }
+            service.RemoveBallByID(1);
+            Assert.AreEqual(service.GetAllBalls().Count, 9);
+            Assert.ThrowsException<InvalidDataException>(() => service.GetBallByID(1));
 
-        [TestMethod]
-        public void GetBallByIDTest()
-        {
-            BallService ballsManager = new BallService(150, 100);
+            int x1 = service.GetBallByID(2).XPos;
+            int y1 = service.GetBallByID(2).YPos;
+            service.DoTick();
+            Assert.IsTrue(service.GetBallByID(2).XPos != x1 || service.GetBallByID(2).YPos != y1);
 
-            Assert.AreEqual(ballsManager.AutoId(), 1);
-            Assert.IsFalse(ballsManager.CheckForExistingID(0));
-            ballsManager.CreateBall(0, 5, 5, 1, 1);
-            ballsManager.CreateBall(1, 5, 5, 1, 1);
-            ballsManager.CreateBall(2, 5, 5, 1, 1);
-
-            Assert.IsTrue(ballsManager.CheckForExistingID(0));
-            Assert.IsTrue(ballsManager.CheckForExistingID(1));
-            Assert.IsTrue(ballsManager.CheckForExistingID(2));
-
-            Assert.AreEqual(ballsManager.GetAllBalls().Count, 3);
-
-            Assert.IsFalse(ballsManager.CheckForExistingID(3));
-
-            ballsManager.RemoveBallByID(2);
-            Assert.IsFalse(ballsManager.CheckForExistingID(2));
-            Assert.AreEqual(ballsManager.GetAllBalls().Count, 2);
-            Assert.AreEqual(ballsManager.AutoId(), 2);
-
-            Assert.ThrowsException<InvalidDataException>(() => ballsManager.RemoveBallByID(1337));
-            Assert.ThrowsException<InvalidDataException>(() => ballsManager.GetBallByID(1337));
-            Assert.ThrowsException<InvalidDataException>(() => ballsManager.CreateBall(1, 5, 5, 5, 5));
-            
-        }
-
-        [TestMethod]
-        public void BallsManagerStorageManagementTest()
-        {
-            BallService ballsManager = new BallService(150, 100);
-            Assert.AreEqual(0, ballsManager.GetAllBalls().Count);
-            ballsManager.CreateBall(0,5,5,10,10);
-            Assert.AreEqual(1, ballsManager.GetAllBalls().Count);
-            Assert.IsTrue(ballsManager.CheckForExistingID(0));
-            Assert.IsFalse(ballsManager.CheckForExistingID(1));
-            Assert.AreEqual(1,ballsManager.AutoId());
-            ballsManager.ClearMap();
-            Assert.AreEqual(0, ballsManager.GetAllBalls().Count);
-        }
-
-        [TestMethod]
-        public void BallRandomGeneratorTest()
-        {
-            BallService ballsManager = new BallService(150, 100);
-            ballsManager.GenerateRandomBall();
-            ballsManager.GenerateRandomBall();
-            ballsManager.GenerateRandomBall();
-            Assert.AreEqual(3, ballsManager.GetAllBalls().Count);
-            Assert.IsTrue(ballsManager.CheckForExistingID(1));
-            Assert.IsTrue(ballsManager.CheckForExistingID(2));
-            Assert.IsTrue(ballsManager.CheckForExistingID(3));
-            Assert.ThrowsException<InvalidDataException>(() => ballsManager.GetBallByID(4));
-            Assert.ThrowsException<InvalidDataException>(() => ballsManager.RemoveBallByID(4));
-
-            ballsManager.ClearMap();
-            Assert.AreEqual(0, ballsManager.GetAllBalls().Count);
-            ballsManager.SummonBalls(5);
-            Assert.AreEqual(5, ballsManager.GetAllBalls().Count);
-            ballsManager.SummonBalls(3);
-            Assert.AreEqual(8, ballsManager.GetAllBalls().Count);
-        }
-
-        [DataTestMethod]
-        [DataRow(1,51,1,1,1)]
-        [DataRow(1, 1, 51, 1, 1)]
-        [DataRow(1, 51, 51, 1, 1)]
-        [DataRow(1, -5, 5, 1, 1)]
-        [DataRow(1, 5, -5, 1, 1)]
-        [DataRow(1, -5, -5, 1, 1)]
-        [DataRow(1, 5, 5, -51, 1)]
-        [DataRow(1, 5, 5, 1, -51)]
-        [DataRow(1, 5, 5, -51, -51)]
-        public void BallManagerExceptionTest(int ID,int xPos, int yPos, int xD, int yD)
-        {
-            BallService ballsManager = new BallService(50, 50);
-            Assert.ThrowsException<InvalidDataException>(() => ballsManager.CreateBall(ID,xPos, yPos,xD,yD));
-            Assert.AreEqual(0,ballsManager.GetAllBalls().Count);
+            service.ClearMap();
+            Assert.AreEqual(service.GetAllBalls().Count, 0);
+            Assert.ThrowsException<InvalidDataException>(() => service.GetBallByID(5));
         }
 
         [TestMethod]
         public void TickTest()
         {
-            BallService ballsManager = new BallService(150, 100);
+            var ballsManager = BallServiceApi.CreateLogic(150, 100);
             //XY CORDS
             ballsManager.SummonBalls(2);
             int xCurrentPos = ballsManager.GetBallByID(1).XPos;

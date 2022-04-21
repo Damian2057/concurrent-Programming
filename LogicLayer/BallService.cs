@@ -5,167 +5,176 @@ using InvalidDataException = LogicLayer.Exceptions.InvalidDataException;
 
 namespace LogicLayer
 {
-    public class BallService
+    public abstract class BallServiceApi
     {
-        private readonly int _mapWidth;
-        private readonly int _mapHeight;
-        private readonly BallRepositoryApi _ballRepository = BallRepositoryApi.CreateRepository();
-        private readonly int _ballMinRadius;
-        private readonly int _ballMaxRadius;
-
-        public BallService(int mapWidth, int mapHeight)
+        public static BallServiceApi CreateLogic(int mapWidth, int mapHeight)
         {
-            _mapHeight = mapHeight;
-            _mapWidth = mapWidth;
-            _ballMinRadius = Math.Min(mapHeight, mapWidth) / 60;
-            _ballMaxRadius = Math.Max(mapWidth, mapHeight) / 20;
-
+            return new BallService(mapWidth, mapHeight);
         }
 
-        public int GetMapWidth()
-        {
-            return _mapWidth;
-        }
+        public abstract void ClearMap();
+        public abstract List<BallApi> GetAllBalls();
+        public abstract void RemoveBallByID(int ID);
+        public abstract BallApi GetBallByID(int ID);
+        public abstract void DoTick();
+        public abstract void SummonBalls(int amount);
+        public abstract int GetMapWidth();
+        public abstract int GetMapHeight();
 
-        public int GetMapHeight()
+        private class BallService : BallServiceApi
         {
-            return _mapHeight;
-        }
 
-        public int GetBallsMinRadius()
-        {
-            return _ballMinRadius;
-        }
+            private readonly int _mapWidth;
+            private readonly int _mapHeight;
+            private readonly BallRepositoryApi _ballRepository = BallRepositoryApi.CreateRepository();
+            private readonly int _ballMinRadius;
+            private readonly int _ballMaxRadius;
 
-        public int GetBallsMaxRadius()
-        {
-            return _ballMaxRadius;
-        }
-
-        public void CreateBall(int ID, int x, int y, int xDirection, int yDirection) 
-        {
-            if(CheckForExistingID(ID) 
-               || (x < _ballMinRadius || x > _mapWidth - _ballMinRadius 
-                         || y < _ballMinRadius || y > _mapHeight - _ballMinRadius 
-                         || yDirection > _mapHeight - _ballMinRadius || yDirection < ((-1) * _mapHeight + _ballMinRadius) 
-                         || xDirection > _mapWidth - _ballMinRadius || xDirection < ((-1) * _mapWidth + _ballMinRadius)))
+            public BallService(int mapWidth, int mapHeight)
             {
-                throw new InvalidDataException("The ball parameters entered are invalid");
+                _mapHeight = mapHeight;
+                _mapWidth = mapWidth;
+                _ballMinRadius = Math.Min(mapHeight, mapWidth) / 60;
+                _ballMaxRadius = Math.Max(mapWidth, mapHeight) / 20;
+
             }
-            else
+
+            private void CreateBall(int ID, int x, int y, int xDirection, int yDirection)
+            {
+                if (CheckForExistingID(ID)
+                   || (x < _ballMinRadius || x > _mapWidth - _ballMinRadius
+                             || y < _ballMinRadius || y > _mapHeight - _ballMinRadius
+                             || yDirection > _mapHeight - _ballMinRadius || yDirection < ((-1) * _mapHeight + _ballMinRadius)
+                             || xDirection > _mapWidth - _ballMinRadius || xDirection < ((-1) * _mapWidth + _ballMinRadius)))
+                {
+                    throw new InvalidDataException("The ball parameters entered are invalid");
+                }
+                else
+                {
+                    Random rnd = new Random();
+                    var newBall = BallApi.CreateBall(ID, x, y, rnd.Next(_ballMinRadius, _ballMaxRadius), xDirection, yDirection);
+                    _ballRepository.AddBall(newBall);
+                }
+            }
+
+            private void GenerateRandomBall()
             {
                 Random rnd = new Random();
-                var newBall = BallApi.CreateBall(ID, x, y, rnd.Next(_ballMinRadius, _ballMaxRadius), xDirection, yDirection);
-                _ballRepository.AddBall(newBall);
-            }
-        }
-
-        public void GenerateRandomBall()
-        {
-            Random rnd = new Random();
-            int xrand = 0, yrand = 0; 
-            while(xrand == 0 || yrand == 0)
-            {
-                xrand = rnd.Next(-5, 5);
-                yrand = rnd.Next(-5, 5);
-            }
-            
-
-            CreateBall(AutoId()
-                , rnd.Next(_ballMaxRadius, _mapWidth - _ballMaxRadius)
-                ,rnd.Next(_ballMaxRadius, _mapHeight - _ballMaxRadius)
-                , xrand
-                , yrand);
-        }
-
-        public void SummonBalls(int amount)
-        {
-            for (int i = 0; i < amount; i++)
-            {
-                GenerateRandomBall();
-            }
-        }
-
-        public int AutoId()
-        {
-            int max = 0;
-            foreach (var ball in GetAllBalls())
-            {
-                if (max < ball.BallID)
+                int xrand = 0, yrand = 0;
+                while (xrand == 0 || yrand == 0)
                 {
-                    max = ball.BallID;
+                    xrand = rnd.Next(-5, 5);
+                    yrand = rnd.Next(-5, 5);
+                }
+
+
+                CreateBall(AutoId()
+                    , rnd.Next(_ballMaxRadius, _mapWidth - _ballMaxRadius)
+                    , rnd.Next(_ballMaxRadius, _mapHeight - _ballMaxRadius)
+                    , xrand
+                    , yrand);
+            }
+
+            public override void SummonBalls(int amount)
+            {
+                for (int i = 0; i < amount; i++)
+                {
+                    GenerateRandomBall();
                 }
             }
 
-            return max + 1;
-        }
-
-        public void DoTick()
-        {
-            
-            foreach (var ball in GetAllBalls())
+            private int AutoId()
             {
-                if (ball.XPos + ball.XDirection + ball.Radius < ball.Radius*2 || ball.XPos + ball.XDirection + ball.Radius > _mapWidth)
+                int max = 0;
+                foreach (var ball in GetAllBalls())
                 {
-                    ball.XDirection = ball.XDirection * (-1);
+                    if (max < ball.BallID)
+                    {
+                        max = ball.BallID;
+                    }
                 }
-                if (ball.YPos + ball.YDirection + ball.Radius < ball.Radius*2 || ball.YPos + ball.YDirection + ball.Radius > _mapHeight)
-                {
-                    ball.YDirection = ball.YDirection * (-1);
-                }
-                ball.XPos += ball.XDirection;
-                ball.YPos += ball.YDirection;
-            }
-        }
 
-        public bool CheckForExistingID(int ID)
-        {
-            foreach (var obj in _ballRepository.GetAllBalls())
-            {
-                if (ID == obj.BallID)
-                {
-                    return true;
-                }
+                return max + 1;
             }
 
-            return false;
-        }
-
-        public BallApi GetBallByID(int ID)
-        {
-            foreach (var obj in _ballRepository.GetAllBalls())
+            public override void DoTick()
             {
-                if (ID == obj.BallID)
+
+                foreach (var ball in GetAllBalls())
                 {
-                    return _ballRepository.GetAllBalls().ElementAt(ID);
+                    if (ball.XPos + ball.XDirection + ball.Radius < ball.Radius * 2 || ball.XPos + ball.XDirection + ball.Radius > _mapWidth)
+                    {
+                        ball.XDirection = ball.XDirection * (-1);
+                    }
+                    if (ball.YPos + ball.YDirection + ball.Radius < ball.Radius * 2 || ball.YPos + ball.YDirection + ball.Radius > _mapHeight)
+                    {
+                        ball.YDirection = ball.YDirection * (-1);
+                    }
+                    ball.XPos += ball.XDirection;
+                    ball.YPos += ball.YDirection;
                 }
             }
 
-            throw new InvalidDataException("The ball with the given ID is not in the list");
-        }
-
-        public void RemoveBallByID(int ID)
-        {
-            foreach (var obj in _ballRepository.GetAllBalls())
+            private bool CheckForExistingID(int ID)
             {
-                if (ID == obj.BallID)
+                foreach (var obj in _ballRepository.GetAllBalls())
                 {
-                    _ballRepository.RemoveBall(obj);
-                    return;
+                    if (ID == obj.BallID)
+                    {
+                        return true;
+                    }
                 }
+
+                return false;
             }
 
-            throw new InvalidDataException("The ball with the given ID is not in the list");
+            public override BallApi GetBallByID(int ID)
+            {
+                foreach (var obj in _ballRepository.GetAllBalls())
+                {
+                    if (ID == obj.BallID)
+                    {
+                        return obj;
+                    }
+                }
+
+                throw new InvalidDataException("The ball with the given ID is not in the list");
+            }
+
+            public override void RemoveBallByID(int ID)
+            {
+                foreach (var obj in _ballRepository.GetAllBalls())
+                {
+                    if (ID == obj.BallID)
+                    {
+                        _ballRepository.RemoveBall(obj);
+                        return;
+                    }
+                }
+
+                throw new InvalidDataException("The ball with the given ID is not in the list");
+            }
+
+            public override List<BallApi> GetAllBalls()
+            {
+                return _ballRepository.GetAllBalls();
+            }
+
+            public override void ClearMap()
+            {
+                _ballRepository.ClearStorage();
+            }
+
+            public override int GetMapWidth()
+            {
+                return _mapWidth;
+            }
+
+            public override int GetMapHeight()
+            {
+                return _mapHeight;
+            }
         }
 
-        public List<BallApi> GetAllBalls()
-        {
-            return _ballRepository.GetAllBalls();
-        }
-
-        public void ClearMap()
-        {
-            _ballRepository.ClearStorage();
-        }
     }
 }
