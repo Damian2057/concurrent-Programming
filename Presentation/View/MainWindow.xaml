@@ -1,16 +1,13 @@
-﻿<Window
-    
-    Title="Balls App"
+﻿<Window Title="Balls App"
     mc:Ignorable="d"
     SizeToContent="WidthAndHeight"
     ResizeMode="NoResize"
-    x:Class="Presentation.View.MainWindow"
+    x:Class="Presentation.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:v="clr-namespace:Presentation.ViewModel;assembly=ViewModel" Width="1280" Height="722">
-
+    xmlns:v="clr-namespace:Presentation.ViewModel" Width="1280" Height="722">
     <Window.DataContext>
         <v:ViewModelClass/>
     </Window.DataContext>

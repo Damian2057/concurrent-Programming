@@ -6,29 +6,39 @@ using System.Threading.Tasks;
 
 namespace Data
 {
-    public class Color
+    public abstract class ColorApi
     {
-        public static string PickColor()
+        public static ColorApi CreateColor()
         {
-            string[] _color = { "#FF165D", "#FF9A00", "#F6F7D7", "#3EC1D3", "#2D4059", "#EA5455", "#F07B3F", "#FFD460", "#8675A9", "#00B8A9" };
-            Random rnd = new Random();
-            return _color[rnd.Next(_color.Length)];
+            return new Color();
         }
 
-        public static string PickRandomColor()
-        {
-            Random rnd = new Random();
-            string hexValue = "#";
+        public abstract string PickColor();
+        public abstract string PickRandomColor();
 
-            for (int i = 0; i < 6; i++)
+        private class Color : ColorApi
+        {
+            public override string PickColor()
             {
-                hexValue+= rnd.Next(16).ToString("X");
+                string[] _color = { "#FF165D", "#FF9A00", "#F6F7D7", "#3EC1D3", "#2D4059", "#EA5455", "#F07B3F", "#FFD460", "#8675A9", "#00B8A9" };
+                Random rnd = new Random();
+                return _color[rnd.Next(_color.Length)];
             }
 
-            return hexValue;
+            public override string PickRandomColor()
+            {
+                Random rnd = new Random();
+                string hexValue = "#";
+
+                for (int i = 0; i < 6; i++)
+                {
+                    hexValue += rnd.Next(16).ToString("X");
+                }
+
+                return hexValue;
+            }
         }
     }
-
     //kolory dla kulek (10)
     //jasnoczerwony - #FF165D
     //pomaranczowy - #FF9A00

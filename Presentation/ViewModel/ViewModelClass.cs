@@ -1,6 +1,7 @@
-﻿using Presentation.ViewModel.MVVMcore;
+﻿using Presentation.ViewModel.MVVMBase;
 using Presentation.Model;
-using Data;
+using System;
+using System.Threading.Tasks;
 
 namespace Presentation.ViewModel
 {

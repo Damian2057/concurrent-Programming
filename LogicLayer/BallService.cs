@@ -9,7 +9,7 @@ namespace LogicLayer
     {
         private readonly int _mapWidth;
         private readonly int _mapHeight;
-        private readonly ObjectStorage<Ball> _objectStorage = new();
+        private readonly BallRepositoryApi _ballRepository = BallRepositoryApi.CreateRepository();
         private readonly int _ballMinRadius;
         private readonly int _ballMaxRadius;
 
@@ -55,8 +55,8 @@ namespace LogicLayer
             else
             {
                 Random rnd = new Random();
-                Ball newBall = new Ball(ID, x, y, rnd.Next(_ballMinRadius, _ballMaxRadius), xDirection, yDirection);
-                _objectStorage.AddBall(newBall);
+                var newBall = BallApi.CreateBall(ID, x, y, rnd.Next(_ballMinRadius, _ballMaxRadius), xDirection, yDirection);
+                _ballRepository.AddBall(newBall);
             }
         }
 
@@ -89,11 +89,11 @@ namespace LogicLayer
         public int AutoId()
         {
             int max = 0;
-            foreach (Ball ball in GetAllBalls())
+            foreach (var ball in GetAllBalls())
             {
-                if (max < ball.GetID())
+                if (max < ball.BallID)
                 {
-                    max = ball.GetID();
+                    max = ball.BallID;
                 }
             }
 
@@ -103,7 +103,7 @@ namespace LogicLayer
         public void DoTick()
         {
             
-            foreach (Ball ball in GetAllBalls())
+            foreach (var ball in GetAllBalls())
             {
                 if (ball.XPos + ball.XDirection + ball.Radius < ball.Radius*2 || ball.XPos + ball.XDirection + ball.Radius > _mapWidth)
                 {
@@ -120,9 +120,9 @@ namespace LogicLayer
 
         public bool CheckForExistingID(int ID)
         {
-            foreach (Ball obj in _objectStorage.GetAllBalls())
+            foreach (var obj in _ballRepository.GetAllBalls())
             {
-                if (ID == obj.GetID())
+                if (ID == obj.BallID)
                 {
                     return true;
                 }
@@ -131,13 +131,13 @@ namespace LogicLayer
             return false;
         }
 
-        public Ball GetBallByID(int ID)
+        public BallApi GetBallByID(int ID)
         {
-            foreach (Ball obj in _objectStorage.GetAllBalls())
+            foreach (var obj in _ballRepository.GetAllBalls())
             {
-                if (ID == obj.GetID())
+                if (ID == obj.BallID)
                 {
-                    return _objectStorage.GetAllBalls().ElementAt(ID);
+                    return _ballRepository.GetAllBalls().ElementAt(ID);
                 }
             }
 
@@ -146,11 +146,11 @@ namespace LogicLayer
 
         public void RemoveBallByID(int ID)
         {
-            foreach (Ball obj in _objectStorage.GetAllBalls())
+            foreach (var obj in _ballRepository.GetAllBalls())
             {
-                if (ID == obj.GetID())
-                { 
-                    _objectStorage.RemoveBall(obj);
+                if (ID == obj.BallID)
+                {
+                    _ballRepository.RemoveBall(obj);
                     return;
                 }
             }
@@ -158,14 +158,14 @@ namespace LogicLayer
             throw new InvalidDataException("The ball with the given ID is not in the list");
         }
 
-        public List<Ball> GetAllBalls()
+        public List<BallApi> GetAllBalls()
         {
-            return _objectStorage.GetAllBalls();
+            return _ballRepository.GetAllBalls();
         }
 
         public void ClearMap()
         {
-            _objectStorage.ClearStorage();
+            _ballRepository.ClearStorage();
         }
     }
 }

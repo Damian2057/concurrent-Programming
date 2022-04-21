@@ -5,11 +5,10 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-	<RootNamespace>Presentation.View</RootNamespace>
   </PropertyGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\ViewModel\ViewModel.csproj" />
-	</ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LogicLayer\LogicLayer.csproj" />
+  </ItemGroup>
 
 </Project>

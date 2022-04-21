@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Presentation.ViewModel.MVVMcore
+namespace Presentation.ViewModel.MVVMBase
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
