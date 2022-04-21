@@ -7,9 +7,9 @@ namespace LogicLayer
 {
     public abstract class BallServiceApi
     {
-        public static BallServiceApi CreateLogic(int mapWidth, int mapHeight)
+        public static BallServiceApi CreateLogic(int mapWidth, int mapHeight, BallRepositoryApi? repo = default)
         {
-            return new BallService(mapWidth, mapHeight);
+            return new BallService(mapWidth, mapHeight, repo ?? BallRepositoryApi.CreateRepository());
         }
 
         public abstract void ClearMap();
@@ -26,12 +26,13 @@ namespace LogicLayer
 
             private readonly int _mapWidth;
             private readonly int _mapHeight;
-            private readonly BallRepositoryApi _ballRepository = BallRepositoryApi.CreateRepository();
+            private readonly BallRepositoryApi _ballRepository;
             private readonly int _ballMinRadius;
             private readonly int _ballMaxRadius;
 
-            public BallService(int mapWidth, int mapHeight)
+            public BallService(int mapWidth, int mapHeight,BallRepositoryApi repoLayer)
             {
+                _ballRepository = repoLayer;
                 _mapHeight = mapHeight;
                 _mapWidth = mapWidth;
                 _ballMinRadius = Math.Min(mapHeight, mapWidth) / 60;
