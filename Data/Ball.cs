@@ -13,7 +13,7 @@
         public int XDirection { get; set; }
         public int YDirection { get; set; }
         public int Radius { get; set; }
-        public string color { get; set; }
+        public string? color { get; set; }
 
         private class Ball : BallApi
         {

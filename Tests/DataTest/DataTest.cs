@@ -58,14 +58,18 @@ namespace Tests.DataTest
             var ball = BallApi.CreateBall(1, 0, 1, 0, 2, 3); 
             Assert.IsTrue(ball.color != "");
             Assert.IsTrue(ball.color is not null);
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             Assert.IsTrue(ball.color.Length == 7);
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
             Assert.IsTrue(ball.color.StartsWith("#"));
 
             //test for a pseudorandom color
             var ball2 = BallApi.CreateBall(1337, 5, 5, 5, 5, 5);
             Assert.IsTrue(ball2.color != "");
             Assert.IsTrue(ball2.color is not null);
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             Assert.IsTrue(ball2.color.Length == 7);
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
             Assert.IsTrue(ball2.color.StartsWith("#"));
         }
     }
