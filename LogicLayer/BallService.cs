@@ -146,6 +146,7 @@ namespace LogicLayer
             {
                 foreach (var obj in _ballRepository.GetAllBalls())
                 {
+
                     if (ID == obj.BallID)
                     {
                         _ballRepository.RemoveBall(obj);
