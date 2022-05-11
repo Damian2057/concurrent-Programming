@@ -13,6 +13,7 @@ namespace Data
         private double _yPos;
         private double _radius;
         private double _mass;
+        private string _color;
 
         public Ball(double xPos, double yPos, double radius, double mass)
         {
@@ -20,12 +21,15 @@ namespace Data
             _yPos = yPos;
             _radius = radius;
             _mass = mass;
+
+            var color = ColorApi.CreateColor();
+            _color = color.PickColor();
         }
 
         public override double xPos { get; set; }
         public override double yPos { get; set; }
         public override double radius { get; set; }
         public override double mass { get; set; }
-
+        public override string color { get; set; }
     }
 }

@@ -10,9 +10,10 @@ namespace Data
     {
         public static BallApi CreateBall(double xPos, double yPos, double radius, double mass)
         {
-            return new Ball();
+            return new Ball(xPos, yPos, radius, mass);
         }
 
+        public abstract string color { get; set; } 
         public abstract double xPos { get; set; }
         public abstract double yPos { get; set; }
         public abstract double radius { get; set; }
