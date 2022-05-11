@@ -9,7 +9,7 @@ using Data;
 
 namespace LogicLayer
 {
-    public class BallTransform : INotifyPropertyChanged
+    public class BallTransform : BallTransformApi, INotifyPropertyChanged
     {
         private readonly BallApi _ball;
         private double _xDirection;
@@ -22,12 +22,12 @@ namespace LogicLayer
             _yDirection = yDirection;
         }
 
-        public BallApi Ball
+        public override BallApi Ball
         {
             get => _ball;
         }
 
-        public double GetX
+        public override double GetX
         {
             get => _ball.xPos;
             set
@@ -37,7 +37,7 @@ namespace LogicLayer
             }
         }
 
-        public double GetY
+        public override double GetY
         {
             get => _ball.yPos;
             set
@@ -47,29 +47,29 @@ namespace LogicLayer
             }
         }
 
-        public double GetRadius
+        public override double GetRadius
         {
             get => _ball.radius;
         }
 
-        public double GetMass
+        public override double GetMass
         {
             get => _ball.mass;
         }
 
-        public double GetXDir
+        public override double GetXDir
         {
             get => _xDirection;
             set => _xDirection = value;
         }
 
-        public double GetYDir
+        public override double GetYDir
         {
             get => _yDirection;
             set => _yDirection = value;
         }
 
-        public double Direction
+        public override double Direction
         {
             get
             {
@@ -77,7 +77,7 @@ namespace LogicLayer
             }
         }
 
-        public double GetForce
+        public override double GetForce
         {
             get
             {
