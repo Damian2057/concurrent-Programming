@@ -9,9 +9,9 @@ namespace LogicLayer
 {
     public abstract class LogicLayerApi
     {
-        public static LogicLayerApi CreateLogic(DataLayerApi logic = default)
+        public static LogicLayerApi CreateLogic(DataLayerApi data = default)
         {
-            return new LogicLayer(logic ?? DataLayerApi.CreateData());
+            return new LogicLayer(data ?? DataLayerApi.CreateData());
         }
 
         public abstract void CreateMap(int width, int height, int numberOfBalls, int radius);

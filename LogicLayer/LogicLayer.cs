@@ -9,26 +9,43 @@ namespace LogicLayer
 {
     internal class LogicLayer : LogicLayerApi
     {
-        private readonly DataLayerApi _logic;
+        private readonly DataLayerApi _data;
         private bool _movingFlag = false;
         private object lockk = new object();
         private List<Thread> _threads;
         private List<BallTransform> _ballsTransformations;
 
-        public LogicLayer(DataLayerApi logic)
+        public LogicLayer(DataLayerApi data)
         {
-            _logic = logic;
+            _data = data;
         }
 
         public override void CreateMap(int width, int height, int numberOfBalls, int radius)
         {
             _ballsTransformations = new();
-            _logic.CreateBoard(width,height);
+            _data.CreateBoard(width,height);
 
             for(int i = 0; i < numberOfBalls; i++)
             {
 
             }
+        }
+
+        private bool isBallInCoordinates(double xPos, double yPos, double radius)
+        {
+            foreach (BallApi ball in _data.GetBalls())
+            {
+                double environment = Math.Sqrt((xPos - ball.xPos) 
+                    * (xPos - ball.xPos) 
+                    + (yPos - ball.yPos) 
+                    * (yPos - ball.yPos));
+                if(environment <= ball.radius + radius)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         public override List<BallTransform> GetBalls()
