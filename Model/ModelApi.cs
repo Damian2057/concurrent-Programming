@@ -44,8 +44,6 @@ namespace Presentation.Model
                 {
                     _circle.Add(CircleApi.CreateCircle(ballTransform));
                 }
-
-                StartAnimation();
             }
             public override void StartAnimation()
             {

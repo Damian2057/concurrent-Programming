@@ -19,6 +19,7 @@ namespace Data
         public abstract double XDirectory { get; set; }
         public abstract double YDirectory { get; set; }
         public abstract event PropertyChangedEventHandler PropertyChanged;
+        public abstract string Color { get; }
 
 
         internal class Ball : BallApi, INotifyPropertyChanged
@@ -31,6 +32,7 @@ namespace Data
             private double _xDirectory;
             private double _yDirectory;
             private bool _isMoving = false;
+            private string _colorHex;
 
             public Ball(double x, double y, double radius, double mass)
             {
@@ -38,6 +40,8 @@ namespace Data
                 _y = y;
                 _radius = radius;
                 _mass = mass;
+                var color = ColorApi.CreateColor();
+                _colorHex = color.PickColor();
 
                 Random rnd = new Random();
                 double xrand = 0, yrand = 0;
@@ -142,6 +146,14 @@ namespace Data
             public void RaisePropertyChanged(string propertyName)
             {
                 this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            }
+
+            public override string Color
+            {
+                get
+                {
+                    return _colorHex;
+                }
             }
         }
     }

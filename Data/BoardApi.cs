@@ -12,6 +12,7 @@ namespace Data
 
         public abstract int Width { get; }
         public abstract int Height { get; }
+        public abstract string Color { get; }
         public abstract void AddBall(BallApi ball);
         public abstract List<BallApi> GetBalls();
 
@@ -31,6 +32,11 @@ namespace Data
             public override int Width { get => _width; }
 
             public override int Height { get => _height; }
+
+            public override string Color
+            {
+                get => Color;
+            }
 
             public override void AddBall(BallApi ball)
             {

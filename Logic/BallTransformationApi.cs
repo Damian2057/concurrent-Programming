@@ -17,6 +17,7 @@ namespace Logic
         public abstract double XDirectory { get; set; }
         public abstract double YDirectory { get; set; }
         public abstract double Mass { get; }
+        public abstract string Color { get; }
 
         public abstract event PropertyChangedEventHandler PropertyChanged;
 
@@ -67,6 +68,11 @@ namespace Logic
                 {
                     _ball.Radius = value;
                 }
+            }
+
+            public override string Color
+            {
+                get => _ball.Color;
             }
 
             public override double XDirectory

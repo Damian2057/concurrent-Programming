@@ -15,6 +15,7 @@ namespace Presentation.Model
         public abstract double YCircle { get; set; }
         public abstract double Radius { get; set; }
         public abstract double RadiusTransformer { get; }
+        public abstract string Color { get; }
         public abstract double BallDiameter { get;}
         public abstract event PropertyChangedEventHandler PropertyChanged;
 
@@ -23,6 +24,7 @@ namespace Presentation.Model
             private double _xCircle;
             private double _yCircle;
             private double _radius;
+            private string _color;
 
             public Circle(BallTransformationApi ball)
             {
@@ -30,6 +32,7 @@ namespace Presentation.Model
                 XCircle = ball.X;
                 YCircle = ball.Y;
                 Radius = ball.Radius;
+                _color = ball.Color;
             }
 
             public override double XCircle
@@ -49,6 +52,11 @@ namespace Presentation.Model
                     _yCircle = value;
                     RaisePropertyChanged("YCircle");
                 }
+            }
+
+            public override string Color
+            {
+                get => _color;
             }
 
             public override double Radius
@@ -74,10 +82,10 @@ namespace Presentation.Model
 
             private void BallPropertyChanged(object sender, PropertyChangedEventArgs e)
             {
-                BallTransformationApi b = (BallTransformationApi)sender;
+                BallTransformationApi ball = (BallTransformationApi)sender;
 
-                XCircle = b.X;
-                YCircle = b.Y;
+                XCircle = ball.X;
+                YCircle = ball.Y;
             }
         }
     }
