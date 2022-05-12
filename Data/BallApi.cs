@@ -16,8 +16,8 @@ namespace Data
         public abstract double Y { get; set; }
         public abstract double Radius { get; set; } 
         public abstract double Mass { get; set; }
-        public abstract double XDirectory { get; set; }
-        public abstract double YDirectory { get; set; }
+        public abstract double XDirection { get; set; }
+        public abstract double YDirection { get; set; }
         public abstract event PropertyChangedEventHandler PropertyChanged;
         public abstract string Color { get; }
 
@@ -29,10 +29,10 @@ namespace Data
             private double _y;
             private double _radius;
             private double _mass;
-            private double _xDirectory;
-            private double _yDirectory;
+            private double _xDirection;
+            private double _yDirection;
             private bool _isMoving = false;
-            private string _colorHex;
+            private string _color;
 
             public Ball(double x, double y, double radius, double mass)
             {
@@ -41,7 +41,7 @@ namespace Data
                 _radius = radius;
                 _mass = mass;
                 var color = ColorApi.CreateColor();
-                _colorHex = color.PickColor();
+                _color = color.PickColor();
 
                 Random rnd = new Random();
                 double xrand = 0, yrand = 0;
@@ -61,19 +61,20 @@ namespace Data
                 {
                     xrand *= -1;
                 }
+
                 if (minYFlag == 0)
                 {
                     yrand *= -1;
                 }
 
-                _xDirectory = xrand;
-                _yDirectory = yrand;
+                _xDirection = xrand;
+                _yDirection = yrand;
             }
 
             public override void MoveBall()
             {
-                X += XDirectory;
-                Y += YDirectory;
+                X += XDirection;
+                Y += YDirection;
                 IsMoving = true;
                 RaisePropertyChanged("Position");
             }
@@ -123,21 +124,21 @@ namespace Data
                 }
             }
 
-            public override double XDirectory
+            public override double XDirection
             {
-                get => _xDirectory;
+                get => _xDirection;
                 set
                 {
-                    _xDirectory = value;
+                    _xDirection = value;
                 }
             }
 
-            public override double YDirectory
+            public override double YDirection
             {
-                get => _yDirectory;
+                get => _yDirection;
                 set
                 {
-                    _yDirectory = value;
+                    _yDirection = value;
                 }
             }
 
@@ -152,7 +153,7 @@ namespace Data
             {
                 get
                 {
-                    return _colorHex;
+                    return _color;
                 }
             }
         }

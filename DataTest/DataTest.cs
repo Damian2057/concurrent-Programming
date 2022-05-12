@@ -36,8 +36,8 @@ namespace DataTest
         public void BallMoveTest()
         {
             var ball = BallApi.CreateBall(0, 0, 3, 4);
-            double preX = ball.XDirectory + ball.X;
-            double preY = ball.YDirectory + ball.Y;
+            double preX = ball.XDirection + ball.X;
+            double preY = ball.YDirection + ball.Y;
             Assert.IsFalse(ball.IsMoving);
             ball.MoveBall();
             Assert.IsTrue(ball.IsMoving);

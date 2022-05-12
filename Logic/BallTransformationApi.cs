@@ -14,8 +14,8 @@ namespace Logic
         public abstract double X { get; set; }
         public abstract double Y { get; set; }
         public abstract double Radius { get; set; }
-        public abstract double XDirectory { get; set; }
-        public abstract double YDirectory { get; set; }
+        public abstract double XDirection { get; set; }
+        public abstract double YDirection { get; set; }
         public abstract double Mass { get; }
         public abstract string Color { get; }
 
@@ -75,21 +75,21 @@ namespace Logic
                 get => _ball.Color;
             }
 
-            public override double XDirectory
+            public override double XDirection
             {
-                get => _ball.XDirectory;
+                get => _ball.XDirection;
                 set
                 {
-                    _ball.XDirectory = value;
+                    _ball.XDirection = value;
                 }
             }
 
-            public override double YDirectory
+            public override double YDirection
             {
-                get => _ball.YDirectory;
+                get => _ball.YDirection;
                 set
                 {
-                    _ball.YDirectory = value;
+                    _ball.YDirection = value;
                 }
             }
 

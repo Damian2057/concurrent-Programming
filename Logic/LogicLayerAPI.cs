@@ -69,7 +69,7 @@ namespace Logic
             private void SetDirectory(BallApi ball)
             {
                 WindowbarrierChecker(ball, _dataLayer.GetBoard());
-                BallApi colisionBall = CheckDirectory(ball);
+                BallApi colisionBall = CheckDirection(ball);
                 if (colisionBall != null)
                 {
                     double newXFirst;
@@ -77,29 +77,30 @@ namespace Logic
                     double newYFirst;
                     double newYSecond;
 
-                    newXFirst = (ball.XDirectory * (ball.Mass - colisionBall.Mass) 
+                    newXFirst = (ball.XDirection * (ball.Mass - colisionBall.Mass)
                         / (ball.Mass + colisionBall.Mass) 
-                        + (2 * colisionBall.Mass * colisionBall.XDirectory) 
+                        + (2 * colisionBall.Mass * colisionBall.XDirection) 
                         / (ball.Mass + colisionBall.Mass));
-                    newYFirst = (ball.YDirectory * (ball.Mass - colisionBall.Mass) 
+                    newYFirst = (ball.YDirection * (ball.Mass - colisionBall.Mass) 
                         / (ball.Mass + colisionBall.Mass) + (2 * colisionBall.Mass 
-                        * colisionBall.YDirectory) / (ball.Mass + colisionBall.Mass));
+                        * colisionBall.YDirection) / (ball.Mass + colisionBall.Mass));
 
-                    newXSecond = (colisionBall.XDirectory 
+                    newXSecond = (colisionBall.XDirection 
                         * (colisionBall.Mass - ball.Mass) 
                         / (ball.Mass + colisionBall.Mass) 
-                        + (2 * ball.Mass * ball.XDirectory) 
+                        + (2 * ball.Mass * ball.XDirection) 
                         / (ball.Mass + colisionBall.Mass));
-                    newYSecond = (colisionBall.YDirectory * (colisionBall.Mass - ball.Mass) 
+                    newYSecond = (colisionBall.YDirection
+                        * (colisionBall.Mass - ball.Mass) 
                         / (ball.Mass + colisionBall.Mass) 
-                        + (2 * ball.Mass * ball.YDirectory) 
+                        + (2 * ball.Mass * ball.YDirection) 
                         / (ball.Mass + colisionBall.Mass));
 
-                    ball.XDirectory = newXFirst;
-                    ball.YDirectory = newYFirst;
+                    ball.XDirection = newXFirst;
+                    ball.YDirection = newYFirst;
 
-                    colisionBall.XDirectory = newXSecond;
-                    colisionBall.YDirectory = newYSecond;
+                    colisionBall.XDirection = newXSecond;
+                    colisionBall.YDirection = newYSecond;
                 }
             }
 
@@ -107,27 +108,27 @@ namespace Logic
             {
                 if (!(ball.X >= ball.Radius && ball.X <= board.Width - ball.Radius))
                 {
-                    if (ball.XDirectory > 0)
+                    if (ball.XDirection > 0)
                         ball.X = board.Width - ball.Radius;
                     else
                         ball.X = ball.Radius;
 
-                    ball.XDirectory *= -1;
+                    ball.XDirection *= -1;
                 }
 
 
                 if (!(ball.Y >= ball.Radius && ball.Y <= board.Height - ball.Radius))
                 {
-                    if (ball.YDirectory > 0)
+                    if (ball.YDirection > 0)
                         ball.Y = board.Height - ball.Radius;
                     else
                         ball.Y = ball.Radius;
 
-                    ball.YDirectory *= -1;
+                    ball.YDirection *= -1;
                 }
             }
 
-            private BallApi? CheckDirectory(BallApi ball)
+            private BallApi? CheckDirection(BallApi ball)
             {
                 foreach (BallApi secondBall in _dataLayer.GetBalls())
                 {
