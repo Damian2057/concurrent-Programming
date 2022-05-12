@@ -1,67 +1,109 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 
 namespace Data
 {
-    public abstract class DataLayerApi
+    public abstract class DataLayerAbstractAPI
     {
-        public static DataLayerApi CreateData()
+        public static DataLayerAbstractAPI CreateAPI()
         {
             return new DataLayer();
         }
 
-        public abstract void CreateBoard(int width, int height, int count, int radius);
-        public abstract void AddBall(double xPos, double yPos, double radius, double mass);
-        public abstract void StartAnimation();
+        public abstract void CreateBoard(int height, int width, int numberOfBalls, int radiusOfBalls);
+        public abstract void AddBall(double x, double y, double radius, double mass);
+        public abstract void StartThreads();
         public abstract void StopAnimation();
-        public abstract Board GetBoard();
+        public abstract bool isBallInCoordinates(double x, double y, double radius);
+        public abstract BoardApi GetBoard();
         public abstract List<BallApi> GetBalls();
-        public abstract void ClearBalls();
 
-        internal class DataLayer : DataLayerApi
+        internal class DataLayer : DataLayerAbstractAPI
         {
-            private Board _board;
+            private BoardApi _board;
+            private List<Thread> _thread;
+            private bool _moving = false;
+            private object _lock = new object();
+            private object _barrier = new object();
+            private int _countOfBalls = 0;
+            private int _counter = 0;
 
-            public override void CreateBoard(int width, int height, int count, int radius)
+            public override void CreateBoard(int height, int width, int count, int radius)
             {
-                _board = new Board(width, height);
+                _board = BoardApi.CreateBoard(height, width);
+                _thread = new();
+                this._countOfBalls = count;
+                double mass = 5;
+
                 Random r = new();
                 for (int i = 0; i < count; i++)
                 {
                     double x;
                     double y;
-                    double mass = r.NextDouble() + 1;
                     do
                     {
-                        x = r.NextDouble() * (width - 2 * radius) + radius;
-                        y = r.NextDouble() * (height - 2 * radius) + radius;
+                        x = r.NextDouble() * (width - 2 - 2 * radius) + radius;
+                        y = r.NextDouble() * (height - 2 - 2 * radius) + radius;
 
                     } while (!isBallInCoordinates(x, y, radius));
-
                     AddBall(x, y, radius, mass);
                 }
             }
 
-            public override void AddBall(double xPos, double yPos, double radius, double mass)
+            public override void AddBall(double x, double y, double radius, double mass)
             {
-                var ball = BallApi.CreateBall(xPos, yPos, radius, mass);
-                _board.AddBall(ball);
+                BallApi newBall = BallApi.CreateBall(x, y, radius, mass);
+                _board.AddBall(newBall);
+
+                Thread t = new Thread(() =>
+                {
+                    while (_moving)
+                    {
+                        //critical section
+                        lock (_lock)
+                        {
+                            newBall.MoveBall();
+                            while (newBall.IsMoving) { }
+                        }
+
+                        //barrier
+                        if (Interlocked.CompareExchange(ref _counter, 1, 0) == 0)
+                        {
+                            Monitor.Enter(_barrier);
+                            while (_moving == true && _counter != _countOfBalls ) { }
+                            Interlocked.Decrement(ref _counter);
+                            Monitor.Exit(_barrier);
+                        }
+                        else
+                        {
+                            Interlocked.Increment(ref _counter);
+                            Monitor.Enter(_barrier);
+                            Interlocked.Decrement(ref _counter);
+                            Monitor.Exit(_barrier);
+                        }
+
+                        Thread.Sleep(1);
+                    }
+                });
+                _thread.Add(t);
             }
 
-            public override void StartAnimation()
+            public override void StartThreads()
             {
-                _board.StartAnimation();
+                _moving = true;
+                foreach (Thread thread in _thread)
+                {
+                    thread.Start();
+                }
             }
 
             public override void StopAnimation()
             {
-                _board.StopAnimation();
+                _moving = false;
             }
 
-            public override Board GetBoard()
+            public override BoardApi GetBoard()
             {
                 return _board;
             }
@@ -71,23 +113,13 @@ namespace Data
                 return _board.GetBalls();
             }
 
-            public override void ClearBalls()
+            public override bool isBallInCoordinates(double x, double y, double radius)
             {
-                _board.ClearBalls();
-            }
-
-            private bool isBallInCoordinates(double xPos, double yPos, double radius)
-            {
-                foreach (BallApi ball in GetBalls())
+                foreach (BallApi other in GetBalls())
                 {
-                    double environment = Math.Sqrt((xPos - ball.xPos)
-                        * (xPos - ball.xPos)
-                        + (yPos - ball.yPos)
-                        * (yPos - ball.yPos));
-                    if (environment <= ball.radius + radius)
-                    {
+                    double distance = Math.Sqrt((x - other.X) * (x - other.X) + (y - other.Y) * (y - other.Y));
+                    if (distance <= radius + other.Radius + 1)
                         return false;
-                    }
                 }
                 return true;
             }
