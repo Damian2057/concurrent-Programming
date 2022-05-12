@@ -8,9 +8,9 @@ namespace Presentation.Model
     {
         private ObservableCollection<CircleApi> _circle = new ObservableCollection<CircleApi>();
 
-        public static ModelApi CreateModel(LogicLayerAbstractAPI logicLayer = default)
+        public static ModelApi CreateModel(LogicLayerAPI logicLayer = default)
         {
-            return new ModelLayer(logicLayer ?? LogicLayerAbstractAPI.CreateLogic());
+            return new ModelLayer(logicLayer ?? LogicLayerAPI.CreateLogic());
         }
 
         public abstract void CreateCircle(int height, int width, int numberOfBalls, int radiusOfBalls);
@@ -26,9 +26,9 @@ namespace Presentation.Model
         internal class ModelLayer : ModelApi
         {
 
-            private readonly LogicLayerAbstractAPI _logicLayer;
+            private readonly LogicLayerAPI _logicLayer;
 
-            public ModelLayer(LogicLayerAbstractAPI logicLayer)
+            public ModelLayer(LogicLayerAPI logicLayer)
             {
                 _logicLayer = logicLayer;
             }
@@ -36,7 +36,7 @@ namespace Presentation.Model
             public override void CreateCircle(int height, int width, int count, int radius)
             {
                 _logicLayer.StopAnimation();
-                _logicLayer.CreateData(height, width, count, radius);
+                _logicLayer.CreateBoard(height, width, count, radius);
 
                 _circle.Clear();
 

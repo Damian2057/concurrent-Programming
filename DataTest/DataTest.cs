@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace DataTest
 {
     [TestClass]
-    public class DataTest
+    public class DataComponentTest
     {
         [TestMethod]
         public void BallConstructorTest()
@@ -15,8 +15,12 @@ namespace DataTest
             Assert.AreEqual(2, ball.Y);
             Assert.AreEqual(3, ball.Radius);
             Assert.AreEqual(4, ball.Mass);
+        }
 
-            //change ball properties
+        [TestMethod]
+        public void BallSetterAndGetterTest()
+        {
+            var ball = BallApi.CreateBall(1, 2, 3, 5);
             ball.X = 0;
             ball.Y = 1;
             ball.Radius = 2;
@@ -26,6 +30,19 @@ namespace DataTest
             Assert.AreEqual(1, ball.Y);
             Assert.AreEqual(2, ball.Radius);
             Assert.AreEqual(3, ball.Mass);
+        }
+
+        [TestMethod]
+        public void BallMoveTest()
+        {
+            var ball = BallApi.CreateBall(0, 0, 3, 4);
+            double preX = ball.XDirectory + ball.X;
+            double preY = ball.YDirectory + ball.Y;
+            Assert.IsFalse(ball.IsMoving);
+            ball.MoveBall();
+            Assert.IsTrue(ball.IsMoving);
+            Assert.AreEqual(ball.X, preX);
+            Assert.AreEqual(ball.Y, preY);
         }
 
         [TestMethod]
@@ -41,6 +58,13 @@ namespace DataTest
             board.AddBall(ball);
 
             Assert.AreEqual(board.GetBalls().Count, 1);
+        }
+
+        [TestMethod]
+        public void ColorTest()
+        {
+            var color = ColorApi.CreateColor();
+            Assert.IsNotNull(color.PickColor());
         }
     }
 }

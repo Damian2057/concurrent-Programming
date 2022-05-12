@@ -3,31 +3,31 @@ using System.ComponentModel;
 
 namespace Logic
 {
-    public abstract class LogicLayerAbstractAPI
+    public abstract class LogicLayerAPI
     {
-        public static LogicLayerAbstractAPI CreateLogic(DataLayerAbstractAPI? data = default)
+        public static LogicLayerAPI CreateLogic(DataLayerAPI? data = default)
         {
-            return new LogicLayer(data ?? DataLayerAbstractAPI.CreateAPI());
+            return new LogicLayer(data ?? DataLayerAPI.CreateData());
         }
 
-        public abstract void CreateData(int height, int width, int numberOfBalls, int radiusOfBalls);
+        public abstract void CreateBoard(int height, int width, int numberOfBalls, int radiusOfBalls);
         public abstract void StartAnimation();
         public abstract void StopAnimation();
 
         public abstract List<BallTransformationApi> GetBalls();
         private List<BallTransformationApi> ballOperators;
 
-        internal class LogicLayer : LogicLayerAbstractAPI
+        internal class LogicLayer : LogicLayerAPI
         {
 
-            private readonly DataLayerAbstractAPI _dataLayer;
+            private readonly DataLayerAPI _dataLayer;
 
-            internal LogicLayer(DataLayerAbstractAPI dataLayerAbstractAPI)
+            internal LogicLayer(DataLayerAPI dataLayerAbstractAPI)
             {
                 _dataLayer = dataLayerAbstractAPI;
             }
 
-            public override void CreateData(int height, int width, int numberOfBalls, int radiusOfBalls)
+            public override void CreateBoard(int height, int width, int numberOfBalls, int radiusOfBalls)
             {
                 ballOperators = new();
                 _dataLayer.CreateBoard(height, width, numberOfBalls, radiusOfBalls);

@@ -4,9 +4,9 @@ using System.Threading;
 
 namespace Data
 {
-    public abstract class DataLayerAbstractAPI
+    public abstract class DataLayerAPI
     {
-        public static DataLayerAbstractAPI CreateAPI()
+        public static DataLayerAPI CreateData()
         {
             return new DataLayer();
         }
@@ -19,7 +19,7 @@ namespace Data
         public abstract BoardApi GetBoard();
         public abstract List<BallApi> GetBalls();
 
-        internal class DataLayer : DataLayerAbstractAPI
+        internal class DataLayer : DataLayerAPI
         {
             private BoardApi _board;
             private List<Thread> _thread;
