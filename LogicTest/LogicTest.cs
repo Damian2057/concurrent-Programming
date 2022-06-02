@@ -1,65 +1,44 @@
+using System;
+using System.Numerics;
+using System.Runtime.CompilerServices;
+using System.Runtime.Serialization;
 using Data;
 using Logic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading;
+using Microsoft.VisualStudio.TestTools.UnitTesting.Logging;
 
 namespace LogicTest
 {
-   /* [TestClass]
-    public class BallTransformation
+    [TestClass]
+
+    public class LogicTest
     {
         [TestMethod]
-        public void BallTransformationConstructorTest()
+        public void LogicTest1()
         {
-            var tb = BallTransformationApi.CreateBallTransformation(Ball.CreateBall(0, 0, 1, 5));
-            Assert.AreEqual(tb.X, 0);
-            Assert.AreEqual(tb.Y, 0);
-            Assert.AreEqual(tb.Radius, 1);
-            Assert.AreEqual(tb.Mass, 5);
-            Assert.IsNotNull(tb.Ball);
+            Vector2 board = new(200, 100);
+            var logic = LogicAPi.CreateBallsLogic(board);
+
+            Assert.IsNotNull(logic);
         }
 
         [TestMethod]
-        public void LogicLayerTest()
+        public void LogicTest2()
         {
-            var data = DataLayerAPI.CreateData();
-            var tb = LogicLayerAPI.CreateLogic(data);
-            Assert.IsNotNull(tb);
-            Assert.IsNotNull(data);
+            Vector2 board = new(300, 300);
+            var logic = LogicAPi.CreateBallsLogic(board);
 
-
-            tb.CreateBoard(100, 100, 5, 5);
-            Assert.AreEqual(tb.GetBalls().Count, 5);
-
-            foreach (BallTransformationApi ball in tb.GetBalls())
-            {
-                Assert.IsTrue(ball.X >= ball.Radius && ball.X <= (100 - ball.Radius));
-                Assert.IsTrue(ball.Y >= ball.Radius && ball.Y <= (100 - ball.Radius));
-                Assert.AreEqual(5, ball.Radius);
-            }
+            Assert.IsNotNull(logic);
         }
+
         [TestMethod]
-        public void ThreadMoveTest()
+        public void LogicTest3()
         {
-            var tb = LogicLayerAPI.CreateLogic();
-            tb.CreateBoard(100, 100, 5, 5);
+            Vector2 board = new(200, 250);
+            var logic = LogicAPi.CreateBallsLogic(board);
 
-            tb.StartAnimation();
-
-
-            foreach (BallTransformationApi ball in tb.GetBalls())
-            {
-                Assert.IsTrue(ball.X >= ball.Radius && ball.X <= (100 - ball.Radius));
-                Assert.IsTrue(ball.Y >= ball.Radius && ball.Y <= (100 - ball.Radius));
-            }
-            Thread.Sleep(200);
-            foreach (BallTransformationApi ball in tb.GetBalls())
-            {
-                Assert.IsTrue(ball.X >= ball.Radius && ball.X <= (100 - ball.Radius));
-                Assert.IsTrue(ball.Y >= ball.Radius && ball.Y <= (100 - ball.Radius));
-            }
-
-            tb.StopAnimation();
+            Assert.IsNotNull(logic);
         }
-    }*/
+    }
 }

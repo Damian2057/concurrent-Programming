@@ -99,9 +99,9 @@
                 HorizontalAlignment="Left" 
                 Height="55" 
                 Background="#C86B85" 
-                Margin="1158,178,0,0" 
+                Margin="1024,180,0,0" 
                 VerticalAlignment="Top" 
-                Width="98" 
+                Width="232" 
                 FontFamily="Bahnschrift SemiBold" 
                 Cursor="Hand"
                 IsCancel="True"/>
