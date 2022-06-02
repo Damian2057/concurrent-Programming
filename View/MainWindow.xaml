@@ -29,20 +29,15 @@
                     </Canvas>
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemContainerStyle>
-                <Style TargetType="ContentPresenter">
-                    <Setter Property="Canvas.Left" Value="{Binding X}" />
-                    <Setter Property="Canvas.Top" Value="{Binding Y}" />
-                </Style>
-            </ItemsControl.ItemContainerStyle>
             <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Path Fill="#C86B85" Stroke="Black">
-                        <Path.Data>
-                            <EllipseGeometry RadiusX="{Binding Radius}"
-                                             RadiusY="{Binding Radius}"/>
-                        </Path.Data>
-                    </Path>
+                <DataTemplate >
+                    <Canvas>
+                        <Ellipse Width="{Binding Radius}" Height="{Binding Radius}" Fill="#b27300" Stroke="Black">
+                            <Ellipse.RenderTransform>
+                                <TranslateTransform X="{Binding X}" Y="{Binding Y}"/>
+                            </Ellipse.RenderTransform>
+                        </Ellipse>
+                    </Canvas>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>

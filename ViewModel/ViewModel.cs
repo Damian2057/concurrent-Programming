@@ -1,7 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Windows.Input;
+﻿using System.ComponentModel;
 using Presentation.Model;
 using ViewModel.MVVMBase;
 
@@ -20,22 +17,16 @@ namespace Presentation.ViewModel
             _numberOfBalls = "";
             _summon = new RelayCommand(Summon, SummonProperties);
             _clear = new RelayCommand(Clear, ClearProperties);
-            _resume = new RelayCommand(Resume, ResumeProperties);
             SummonFlag = true;
             ClearFlag = false;
-            ResumeFlag = false;
         }
 
         public RelayCommand _summon { get; }
         public RelayCommand _clear { get; }
-        public RelayCommand _resume { get; }
 
         public bool _summonFlag = true;
         public bool _clearFlag = false;
-        public bool _resumeFlag = false;
         public bool _pauseFlag = false;
-
-        public ModelApi _mainMap { get; set; }
 
         public int _width { get; }
         public int _height { get; }
@@ -72,23 +63,6 @@ namespace Presentation.ViewModel
             }
         }
 
-        public bool ResumeFlag
-        {
-            get => _resumeFlag;
-
-            set
-            {
-                _resumeFlag = value;
-                _resume.OnCanExecuteChanged();
-            }
-        }
-
-        public ObservableCollection<CircleApi> GetBalls
-        {
-            get => _mainMap.Circles;
-            set => _mainMap.Circles = value;
-        }
-
         public void Summon()
         {
             try
@@ -100,10 +74,26 @@ namespace Presentation.ViewModel
                     throw new ArgumentException("Number of balls is less than 1");
                 }
 
-                _mainMap.CreateCircle(706, 1000, numberOfBalls, 25);
+                mainboard.SetBallsNumber(numberOfBalls);
+                for (int i = 0; i < numberOfBalls; i++)
+                {
+                    Circles.Add(new BallAdapter());
+                }
+
+                mainboard.BallPositionChange += (sender, args) =>
+                {
+                    if (Circles.Count <= 0) return;
+
+                    for (int i = 0; i < numberOfBalls; i++)
+                    {
+                        Circles[args.Ball.ID].Position = args.Ball.Position;
+                        Circles[args.Ball.ID].Radius = args.Ball.Radius;
+                    }
+                };
+                mainboard.StartSimulation();
+
                 SummonFlag = false;
                 ClearFlag = true;
-                ResumeFlag = true;
             }
             catch (Exception)
             {
@@ -113,18 +103,11 @@ namespace Presentation.ViewModel
 
         public void Clear()
         {
-            NumberOfBalls = "";
+            mainboard.StopSimulation();
+            Circles.Clear();
+            mainboard.SetBallsNumber(0);
             SummonFlag = true;
             ClearFlag = false;
-            ResumeFlag = false;
-            _mainMap.StopAnimation();
-        }
-
-        public void Resume()
-        {
-
-            ResumeFlag = false;
-            _mainMap.StartAnimation();
         }
 
         private bool SummonProperties()
@@ -135,11 +118,6 @@ namespace Presentation.ViewModel
         private bool ClearProperties()
         {
             return ClearFlag;
-        }
-
-        private bool ResumeProperties()
-        {
-            return ResumeFlag;
         }
     }
 }
