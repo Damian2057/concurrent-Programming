@@ -30,6 +30,8 @@ namespace LogicTest
             var logic = LogicAPi.CreateBallsLogic(board);
 
             Assert.IsNotNull(logic);
+
+
         }
 
         [TestMethod]
@@ -40,5 +42,6 @@ namespace LogicTest
 
             Assert.IsNotNull(logic);
         }
+
     }
 }
