@@ -42,9 +42,9 @@ namespace Data
             bool PossitionStatus = false;
             while (!PossitionStatus)
             {
-                xPos = random.Next(ballRadius, (int)(BoardHeightAndWidth.X - ballRadius));
-                yPos = random.Next(ballRadius, (int)(BoardHeightAndWidth.Y - ballRadius));
-                PossitionStatus = this.CheckSpace(new Vector2(xPos, yPos), ballRadius);
+                xPos = random.Next(ballRadius, (int) (BoardHeightAndWidth.X - ballRadius));
+                yPos = random.Next(ballRadius, (int) (BoardHeightAndWidth.Y - ballRadius));
+                PossitionStatus = CheckSpace(new Vector2(xPos, yPos), ballRadius);
 
                 if (attempt >= 100)
                 {
@@ -59,7 +59,7 @@ namespace Data
         {
             foreach (BallInterface? ball in ballsList)
             {
-                if (this.CheckEnvironment(ball.Position, ball.Radius, position, ballRadius))
+                if (CheckEnvironment(ball.Position, ball.Radius, position, ballRadius))
                 {
                     return false;
                 }
@@ -77,9 +77,9 @@ namespace Data
 
         private Vector2 CreateDirectionSpeed()
         {
-            Random rng = new();
-            int x = rng.Next(-MaxSpeed, MaxSpeed);
-            int y = rng.Next(-MaxSpeed, MaxSpeed);
+            Random r = new();
+            int x = r.Next(-MaxSpeed, MaxSpeed);
+            int y = r.Next(-MaxSpeed, MaxSpeed);
             if (Math.Abs(x) < MinSpeed)
             {
                 x = MinSpeed;
@@ -102,17 +102,17 @@ namespace Data
 
             foreach (BallInterface? ball in ballsList)
             {
-                ball.PositionChange += this.OnBallOnPositionChange;
+                ball.PositionChange += OnBallOnPositionChange;
 
                 Task.Factory.StartNew(ball.Move, CancelSimmulation.Token);
             }
         }
 
-        private void OnBallOnPositionChange(object _, OnBallPositionChangeEvent args)
+        private void OnBallOnPositionChange(object _, OnBallPositionChangeEvent BallEvent)
         {
-            BallLoger.AddLogToSave(args.Ball);
-            OnPositionChangeEvent newArgs = new(args.Ball, new List<BallInterface>(ballsList));
-            this.OnPositionChange(newArgs);
+            BallLoger.AddLogToSave(BallEvent.Ball);
+            OnPositionChangeEvent newData = new(BallEvent.Ball, new List<BallInterface>(ballsList));
+            OnPositionChange(newData);
         }
 
         public override void StopAction()

@@ -9,11 +9,12 @@ namespace Presentation.ViewModel
 
         public ObservableCollection()
         {
+
         }
 
-        public ObservableCollection(IEnumerable<T> list)
-           : base(list)
+        public ObservableCollection(IEnumerable<T> list) : base(list)
         {
+
         }
 
         protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)

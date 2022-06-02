@@ -8,12 +8,13 @@ namespace Presentation.Model
       private readonly Vector2 BoardWH;
       private int countOfBalls;
       private LogicAPi LogicLayer;
+      public event EventHandler<OnPositionChangeEvent>? BallPositionChange;
 
       public MainBoard()
       {
-         BoardWH = new Vector2(650, 400);
          countOfBalls = 0;
-         this.PrepareBallsLogic();
+         BoardWH = new Vector2(1000, 600);
+         PrepareBallsLogic();
       }
 
       public void StartSimulation()
@@ -25,13 +26,13 @@ namespace Presentation.Model
       public void StopSimulation()
       {
          LogicLayer.StopSimulation();
-         this.PrepareBallsLogic();
+         PrepareBallsLogic();
       }
 
       private void PrepareBallsLogic()
       {
          LogicLayer = LogicAPi.CreateBallsLogic(BoardWH);
-         LogicLayer.PositionChange += this.OnBallsLogicPositionChange;
+         LogicLayer.PositionChange += OnBallsLogicPositionChange;
       }
 
       private void OnBallsLogicPositionChange(object sender, Logic.OnPositionChangeEvent args)
@@ -49,11 +50,9 @@ namespace Presentation.Model
          return countOfBalls;
       }
 
-      public void OnBallPositionChange(OnPositionChangeEvent args)
+      public void OnBallPositionChange(OnPositionChangeEvent BallArgs)
       {
-         BallPositionChange?.Invoke(this, args);
+         BallPositionChange?.Invoke(this, BallArgs);
       }
-
-      public event EventHandler<OnPositionChangeEvent>? BallPositionChange;
     }
 }

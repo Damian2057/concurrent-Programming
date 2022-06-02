@@ -62,7 +62,7 @@ namespace Data
                 PositionChange?.Invoke(this, newArgs);
 
                 Vector2 nextPosition = Position + Vector2.Multiply(Speed, timeDifference);
-                Position = this.Bounce(nextPosition);
+                Position = Bounce(nextPosition);
 
                 await Task.Delay(4, owner.CancelSimmulation.Token).ContinueWith(_ => { });
                
@@ -98,10 +98,11 @@ namespace Data
 
         public void GetObjectData(SerializationInfo ballInfo, StreamingContext context)
         {
-            ballInfo.AddValue("ID", BallID);
-            ballInfo.AddValue("Position", Position);
-            ballInfo.AddValue("Velocity", Speed);
-            ballInfo.AddValue("Radius", Radius);
-            ballInfo.AddValue("Mass", Mass);        }
+            ballInfo.AddValue("BallID", BallID);
+            ballInfo.AddValue("PositionXY", Position);
+            ballInfo.AddValue("SpeedDirection", Speed);
+            ballInfo.AddValue("BallRadius", Radius);
+            ballInfo.AddValue("BallMass", Mass);        
+        }
     }
 }

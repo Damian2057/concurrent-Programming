@@ -1,60 +1,115 @@
-﻿<Window x:Class="Presentation.View.MainView"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:vm="clr-namespace:Presentation.ViewModel;assembly=ViewModel"
-        mc:Ignorable="d"
-		
-        Title="MainView"
-        Height="450"
-        Width="800"
-		Background="#222" Foreground="AliceBlue"
-		FontSize="14"
-        d:DesignHeight="450"
-        d:DesignWidth="800"
-        ResizeMode="NoResize">
-
+﻿<Window Title="Balls App"
+    mc:Ignorable="d"
+    SizeToContent="WidthAndHeight"
+    ResizeMode="NoResize"
+    x:Class="Presentation.View.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:v="clr-namespace:Presentation.ViewModel;assembly=ViewModel" Width="1280" Height="706">
     <Window.DataContext>
-        <vm:MainModel/>
+        <v:MainModel/>
     </Window.DataContext>
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="700"/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1">
-            <Button Content="➕" HorizontalAlignment="Center" VerticalAlignment="Center"
-                    Command="{Binding IncreaseButton}"/>
-            <Label HorizontalContentAlignment="Center" 
-				    Content="{Binding BallsCount}" />
-            <Button Content="➖" HorizontalAlignment="Center" VerticalAlignment="Center"
-                    Command="{Binding DecreaseButton}"/>
-            <Button Content="Start" HorizontalAlignment="Center" VerticalAlignment="Center"
-                    Command="{Binding StartSimulationButton}"/>
-            <Button Content="Stop" HorizontalAlignment="Center" VerticalAlignment="Center"
-                    Command="{Binding StopSimulationButton}"/>
-        </StackPanel>
-        <StackPanel Grid.Column="0" VerticalAlignment="Center">
-            <Canvas x:Name="BallCanvas" Height="400" Width="650">
-                <Border BorderBrush="#707070" BorderThickness="1" Height="400" Width="650"/>
+        <ItemsControl ItemsSource="{Binding Circles}"
+                      Margin="0,0,280,0" 
+                      Width="1000" 
+                      Height="706" 
+                      IsTabStop="False">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas>
+                        <Canvas.Background>
+                            <RadialGradientBrush>
+                                <GradientStop Color="#E6A4B4" Offset="1"/>
+                                <GradientStop Color="#F5EEE6" Offset="0"/>
+                            </RadialGradientBrush>
+                        </Canvas.Background>
+                    </Canvas>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemContainerStyle>
+                <Style TargetType="ContentPresenter">
+                    <Setter Property="Canvas.Left" Value="{Binding X}" />
+                    <Setter Property="Canvas.Top" Value="{Binding Y}" />
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Path Fill="#C86B85" Stroke="Black">
+                        <Path.Data>
+                            <EllipseGeometry RadiusX="{Binding Radius}"
+                                             RadiusY="{Binding Radius}"/>
+                        </Path.Data>
+                    </Path>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
 
-                <ItemsControl ItemsSource="{Binding Path = Circles}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate >
-                            <Canvas>
-                                <Ellipse Width="{Binding Radius}" Height="{Binding Radius}" Fill="#8a2be2" Stroke="Black" StrokeThickness="2">
-                                    <Ellipse.RenderTransform>
-                                        <TranslateTransform X="{Binding X}" Y="{Binding Y}"/>
-                                    </Ellipse.RenderTransform>
-                                </Ellipse>
-                            </Canvas>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+        <Rectangle HorizontalAlignment="Left"
+                   Height="706" 
+                   Margin="1000,0,0,0"
+                   Stroke="Black" 
+                   VerticalAlignment="Center" 
+                   Width="280">
+            <Rectangle.Fill>
+                <LinearGradientBrush StartPoint="0,1"
+                                     EndPoint="1,1">
+                    <GradientStop Color="#F3D7CA" Offset="0.0" />
+                    <GradientStop Color="#F3D7CA" Offset="1.0" />
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
 
-            </Canvas>
-        </StackPanel>
-        <GridSplitter Grid.Column="1" HorizontalAlignment="Left" Height="100" Margin="300,359,0,0" VerticalAlignment="Top" Width="6"/>
+        <TextBox Name="TextBox" 
+                 IsEnabled="{Binding Button}" 
+                 Text="{Binding NumberOfBalls}" 
+                 HorizontalAlignment="Left" 
+                 Margin="1024,56,0,0" 
+                 TextWrapping="Wrap" 
+                 VerticalAlignment="Top" 
+                 Width="232" Height="35" 
+                 FontSize="20" 
+                 Cursor="IBeam" 
+                 MaxLines="1"
+                 MaxLength="3"
+                 FontFamily="Segoe UI"/>
+
+        <Label Name="EnterNumberOfBallsLabel" 
+               Content="Enter number of balls:" 
+               HorizontalAlignment="Left" 
+               Height="32" 
+               Margin="1024,19,0,0" 
+               VerticalAlignment="Top" 
+               Width="232" 
+               FontSize="22" 
+               FontFamily="Bahnschrift SemiBold"/>
+
+        <Button Name="SummonBallsButton" 
+                Content="Summon Balls" 
+                Command="{Binding _summon}" 
+                HorizontalAlignment="Left" 
+                Background="#F5EEE6"  
+                Height="40" 
+                Margin="1024,115,0,0" 
+                VerticalAlignment="Top" 
+                Width="232" 
+                FontFamily="Bahnschrift SemiBold"
+                Cursor="Hand"/>
+
+        <Button Name="ClearMapButton"
+                Content="Stop" 
+                Command="{Binding _clear}"
+                HorizontalAlignment="Left" 
+                Height="55" 
+                Background="#C86B85" 
+                Margin="1158,178,0,0" 
+                VerticalAlignment="Top" 
+                Width="98" 
+                FontFamily="Bahnschrift SemiBold" 
+                Cursor="Hand"
+                IsCancel="True"/>
+
     </Grid>
 </Window>

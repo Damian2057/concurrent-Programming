@@ -12,23 +12,28 @@ namespace Logic
             DataLayer = dataBalls;
         }
 
-        public override void SummonBalls(int howMany)
+        public override void SummonBalls(int countOfBalls)
         {
-            DataLayer.AddBalls(howMany);
+            DataLayer.AddBalls(countOfBalls);
         }
 
         public override void StartSimulation()
         {
-            DataLayer.PositionChange += this.OnBallsOnPositionChange;
+            DataLayer.PositionChange += OnBallsOnPositionChange;
             DataLayer.StartAction();
+        }
+
+        public override void StopSimulation()
+        {
+            DataLayer.StopAction();
         }
 
         private void OnBallsOnPositionChange(object _, Data.OnPositionChangeEvent args)
         {
-            this.DetectBallsImpact(args.SenderBall, args.Balls);
+            DetectBallsImpact(args.SenderBall, args.Balls);
             CollistionDetector.BoundFromBarrier(args.SenderBall, DataLayer.BoardHeightAndWidth);
             OnPositionChangeEvent newArgs = new(new BallAdapter(args.SenderBall));
-            this.OnPositionChange(newArgs);
+            OnPositionChange(newArgs);
         }
 
         private void DetectBallsImpact(BallInterface ball, IList<BallInterface> ballList)
@@ -46,11 +51,6 @@ namespace Logic
             {
                 simulationMutex.ReleaseMutex();
             }
-        }
-
-        public override void StopSimulation()
-        {
-            DataLayer.StopAction();
         }
     }
 }
